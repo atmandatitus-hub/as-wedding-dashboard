@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Amanda & Steven · Wedding Dashboard</title>
+<title>Amanda & Steven · Wedding Planning Dashboard</title>
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1108,7 +1108,9 @@ function renderTasks(sort='timing'){
     updateProgress();
     renderTasks(currentSort);
     if(SCRIPT_URL && TASKS[idx].row){
-      fetch(`${SCRIPT_URL}?action=update&row=${TASKS[idx].row}&status=${encodeURIComponent(STATUS_TO_SHEET[TASKS[idx].s])}`).catch(()=>{});
+      fetch(`${SCRIPT_URL}?action=update&row=${TASKS[idx].row}&status=${encodeURIComponent(STATUS_TO_SHEET[TASKS[idx].s])}`)
+        .then(r=>r.json()).then(r=>console.log('Saved to sheet:', r))
+        .catch(err=>console.error('Could not save to sheet:', err));
     }
   }));
   updateProgress();
