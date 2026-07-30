@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Amanda & Steven · Wedding Planning Dashboard</title>
+<title>Amanda & Steven · Wedding Dashboard</title>
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -301,7 +301,7 @@
 <div id="gate" style="position:fixed;inset:0;background:var(--cream);z-index:999;display:flex;align-items:center;justify-content:center;padding:22px">
   <form id="gate-form" style="max-width:320px;width:100%;text-align:center">
     <div style="font-family:'Libre Caslon Display',serif;font-size:1.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--plum);margin-bottom:6px">Amanda &amp; Steven</div>
-    <div style="font-size:.9rem;color:var(--muted);margin-bottom:18px">Enter the password to view the wedding planning dashboard</div>
+    <div style="font-size:.9rem;color:var(--muted);margin-bottom:18px">Enter the password to view the wedding dashboard</div>
     <input id="gate-input" type="password" autocomplete="off" style="width:100%;padding:11px 14px;border:1px solid var(--sand);border-radius:10px;background:var(--surface);color:var(--ink);font-family:'Source Sans Pro',sans-serif;font-size:1rem;text-align:center" placeholder="Password">
     <div id="gate-error" style="color:#a23; font-size:.8rem;margin-top:8px;height:1em"></div>
     <button type="submit" style="margin-top:14px;width:100%;padding:11px;border:none;border-radius:99px;background:var(--plum-fill);color:var(--paper);font-family:'Source Sans Pro',sans-serif;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;cursor:pointer">Enter</button>
@@ -419,7 +419,7 @@
   <section class="panel" id="itin" role="tabpanel">
     <h2 class="secttl">The whole trip</h2>
     <p class="sectsub">Flights, hotels, and the day-by-day plan, in one line &middot; Sept 22 – Oct 12.</p>
-    <div class="note"><b>One leg still to book:</b> Barcelona → Mallorca (around Oct 5). Flagged below.</div>
+    <div class="note">All flights are booked and confirmed.</div>
     <div id="itin-list"></div>
   </section>
 
@@ -609,13 +609,15 @@ const TASKS = [
 
   {ph:'3 months out', c:'Attire', t:'Schedule suit/tux fitting', w:'Jul 1', s:'done'},
   {ph:'3 months out', c:'Attire', t:'Attend tux fitting #1', w:'Jul 6', s:'done'},
-  {ph:'3 months out', c:'Attire', t:'Attend dress fitting #1', w:'Jul 29', s:'open'},
+  {ph:'3 months out', c:'Attire', t:'Attend dress fitting #1', w:'Jul 29', s:'done'},
   {ph:'3 months out', c:'Attire', t:'Buy groom shoes, socks & bow tie', w:'Jul 31', s:'progress'},
-  {ph:'3 months out', c:'Travel', t:'Book flights: Barcelona → Mallorca', w:'Jul 31', s:'open'},
+  {ph:'3 months out', c:'Travel', t:'Book flights: Barcelona → Mallorca', w:'Jul 31', s:'done'},
   {ph:'3 months out', c:'Travel', t:'Book flights: London → Barcelona', w:'Jul 31', s:'done'},
-  {ph:'3 months out', c:'Photo', t:'Book a photographer for Sept 29', w:'Aug 1', s:'open'},
+  {ph:'3 months out', c:'Photo', t:'Book a photographer for Sept 29', w:'Aug 1', s:'progress'},
+  {ph:'3 months out', c:'Photo', t:'Make list of special moments for photographer/videographer to capture', w:'', s:'progress'},
+  {ph:'3 months out', c:'Ceremony', t:'Decide music for ceremony', w:'Aug 1', s:'progress'},
   {ph:'3 months out', c:'Dinner', t:'Confirm final guest count & food prefs with Cloud9', w:'Aug 1', s:'open'},
-  {ph:'3 months out', c:'Dinner', t:'Decide seating arrangements', w:'Aug 3', s:'open'},
+  {ph:'3 months out', c:'Dinner', t:'Decide seating arrangements', w:'Aug 3', s:'progress'},
   {ph:'3 months out', c:'Logistics', t:'Pay final balance — venue', w:'Aug 6', s:'done'},
   {ph:'3 months out', c:'Logistics', t:'Pay final balance — dinner service', w:'Aug 29', s:'open'},
   {ph:'3 months out', c:'Attire', t:'Attend dress fitting #2', w:'Aug 27', s:'open'},
@@ -623,7 +625,7 @@ const TASKS = [
 
   {ph:'1 month out', c:'Travel', t:'Book dinner/activities — London', w:'Aug 30', s:'progress'},
   {ph:'1 month out', c:'Travel', t:'Book dinner/activities — Barcelona', w:'Aug 31', s:'open'},
-  {ph:'1 month out', c:'Décor', t:'Make place cards and menus (dinner)', w:'Aug 31', s:'open'},
+  {ph:'1 month out', c:'Décor', t:'Design stationery/signage (place cards, menus, etc.)', w:'Aug 31', s:'progress'},
   {ph:'1 month out', c:'Ceremony', t:'Write wedding vows', w:'Sep 1', s:'open'},
   {ph:'1 month out', c:'Ceremony', t:'Talk to officiant — vows & advice from the fam', w:'Sep 1', s:'open'},
   {ph:'1 month out', c:'Attire', t:'Buy wrap or coat, if needed', w:'Sep 1', s:'open'},
@@ -691,6 +693,7 @@ const DAYS = [
   ]},
   {day:'Monday, Sept 28', items:[
     {type:'hotel', tm:'10:00 AM', t:'Check out: Cotton House Hotel', n:'', addr:'Gran Via de les Corts Catalanes 670, Barcelona 08010'},
+    {type:'event', tm:'TBD', t:'Ring cleaning @ Tiffany', n:''},
     {type:'event', tm:'TBD', t:'Cloud9 wedding menu tasting', n:'Barcelona'},
     {type:'transfer', tm:'TBD', t:'Barcelona \u2192 ME Sitges Terramar', n:'Car not booked yet', dur:'\u2248 40 min by car, or 35 min by train'},
     {type:'hotel', tm:'4:00 PM', t:'Check in: ME Sitges Terramar', n:'3 nights \u00b7 breakfast included', addr:'Pg. Mar\u00edtimo 80, 08870 Sitges', url:'https://www.melia.com/en/hotels/spain/sitges/me-sitges-terramar'},
@@ -724,7 +727,7 @@ const DAYS = [
   {day:'Monday, Oct 5', items:[
     {type:'wedding', tm:'10:00 AM', t:'Check out of Masia Victoria', n:'', addr:'Carrer de Canyelles 10, 08810 Sant Pere de Ribes'},
     {type:'transfer', tm:'TBD', t:'Masia Victoria \u2192 Barcelona Airport', n:'Car not booked yet', dur:'\u2248 1h'},
-    {type:'gap', tm:'TBD', t:'Barcelona (BCN) \u2192 Palma de Mallorca (PMI)', n:'Not booked yet', addr:'Josep Tarradellas Barcelona\u2013El Prat \u2192 Palma de Mallorca', dur:'\u2248 50 min flight'},
+    {type:'flight', tm:'4:15 PM', t:'Barcelona (BCN) \u2192 Palma de Mallorca (PMI)', n:'Vueling VY3912', addr:'Josep Tarradellas Barcelona\u2013El Prat \u2192 Palma de Mallorca', dur:'55 min \u00b7 lands 5:10 PM'},
     {type:'transfer', tm:'TBD', t:'Palma Airport \u2192 Zel Mallorca', n:'Car not booked yet', dur:'\u2248 35 min'},
     {type:'hotel', tm:'4:00 PM', t:'Check in: Zel Mallorca', n:'6 nights \u00b7 honeymoon \u00b7 breakfast included', addr:'Duque de Extremera 16, 07181 Palmanova', url:'https://www.melia.com/en/hotels/spain/majorca/zel-mallorca'},
   ]},
