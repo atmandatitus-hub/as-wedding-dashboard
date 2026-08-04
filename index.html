@@ -197,38 +197,32 @@
 
   .itin{position:relative;padding-left:30px;margin-top:6px}
   .itin::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--sand)}
-  .dayflow{padding-left:18px;margin-top:6px}
-  .dayflow .trow{margin-left:-18px}
-  .ev{position:relative;padding:0 0 18px 18px}
-  .ev::before{content:"";position:absolute;left:-1px;top:5px;width:11px;height:11px;border-radius:50%;background:var(--plum-fill);border:2px solid var(--cream)}
-  .ev.transfer::before{background:transparent;border:2px dashed var(--muted)}
-  .ev .et{font-family:'Source Sans Pro',sans-serif;font-size:.72rem;color:var(--muted);font-weight:500}
-  .ev .en{font-family:'Libre Caslon Display',serif;font-size:1.4rem;font-weight:600;margin-top:1px;color:var(--plum)}
-  .ev.transfer .en{color:var(--muted);font-style:italic;font-weight:500;font-size:1.15rem}
-  .ev .ed{font-size:.84rem;color:var(--sage-deep)}
+  .dayflow{margin-top:6px}
 
-  .dcards{margin:6px 0 18px}
-  .trow{display:flex;align-items:flex-start;gap:14px;background:var(--surface);border:1px solid var(--sand);box-shadow:0 1px 3px rgba(20,10,15,.04),0 1px 2px rgba(20,10,15,.03);border-left:3px solid var(--sand);border-radius:0 12px 12px 0;padding:13px 16px;margin-bottom:9px}
-  .trow.flight,.trow.wedding{border-left-color:var(--plum)}
-  .trow.gap,.trow.transfer{background:transparent;border-style:dashed;border-left-style:solid}
-  .ttag{flex:0 0 88px;font-family:'Source Sans Pro',sans-serif;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-top:2px}
-  .trow.flight .ttag,.trow.wedding .ttag{color:var(--plum)}
-  .tdate{flex:0 0 78px;font-family:'Source Sans Pro',sans-serif;font-size:.78rem;color:var(--ink);font-weight:500;padding-top:2px}
-  .tbody{flex:1;min-width:0}
-  .tt{font-family:'Libre Caslon Display',serif;font-size:1.2rem;font-weight:600;color:var(--plum)}
-  .trow.gap .tt,.trow.transfer .tt{color:var(--muted);font-style:italic;font-weight:500}
-  .tt a,.en a{color:inherit;text-decoration:none;border-bottom:1px solid var(--sand)}
-  .tt a:hover,.en a:hover{border-bottom-color:var(--plum)}
-  .tn{font-size:.8rem;color:var(--muted);margin-top:2px}
-  .taddr{font-family:'Source Sans Pro',sans-serif;font-size:.72rem;color:var(--muted);margin-top:6px}
+  .irow{display:grid;grid-template-columns:56px 68px minmax(140px,auto) 1fr;align-items:baseline;column-gap:12px;padding:8px 4px;border-bottom:1px solid var(--sand)}
+  .irow:last-child{border-bottom:none}
+  .itag{font-family:'Source Sans Pro',sans-serif;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--plum)}
+  .itime{font-family:'Source Sans Pro',sans-serif;font-size:.82rem;font-weight:600;color:var(--ink);white-space:nowrap}
+  .ititle{font-family:'Libre Caslon Display',serif;font-size:1.08rem;color:var(--plum)}
+  .ititle a{color:inherit;text-decoration:none;border-bottom:1px solid var(--sand)}
+  .ititle a:hover{border-bottom-color:var(--plum)}
+  .imeta{font-family:'Source Sans Pro',sans-serif;font-size:.78rem;color:var(--muted);grid-column:4;align-self:center}
+
+  .irow.muted .itag,.irow.muted .itime{color:var(--muted)}
+  .irow.muted .ititle{color:var(--muted);font-style:italic;font-weight:400}
+  .irow.dashed{border-left:2px dashed var(--muted);padding-left:8px;margin-left:-10px}
+
+  @media (max-width:640px){
+    .irow{grid-template-columns:44px 58px 1fr;row-gap:2px}
+    .imeta{grid-column:1 / -1;padding-left:0}
+  }
+
   .daywrap{border-bottom:1px solid var(--sand);padding-bottom:4px;margin-bottom:4px}
   .daywrap:last-child{border-bottom:none}
   .dayhead{font-family:'Source Sans Pro',sans-serif;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sage-deep);margin:26px 0 10px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px}
   .dayhead::-webkit-details-marker{display:none}
   .dayhead::before{content:"\25B8";font-size:.8rem;color:var(--clay);transition:transform .15s;flex:0 0 auto}
   .daywrap[open] .dayhead::before{transform:rotate(90deg)}
-  .ev.tentative::before{background:transparent;border:2px dashed var(--muted)}
-  .ev.tentative .en{color:var(--muted);font-style:italic;font-weight:500;font-size:1.15rem}
 
   .roomgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
   .room{background:var(--surface);border:1px solid var(--sand);box-shadow:0 1px 3px rgba(20,10,15,.04),0 1px 2px rgba(20,10,15,.03);border-radius:16px;padding:14px 15px}
@@ -1157,34 +1151,39 @@ document.getElementById('chart-tasks').innerHTML = donut(pct, 'Tasks done', `${d
 requestAnimationFrame(()=>document.querySelectorAll('.donut circle.prog').forEach(c=>{c.setAttribute('stroke-dasharray', c.dataset.dash);}));
 
 
-const TTAG = {flight:'Flight', hotel:'Hotel', wedding:'Wedding', gap:'Flight needed'};
-function travelCard(x){
+const ITAG = {flight:'Flight', hotel:'Hotel', wedding:'Wedding', car:'Car'};
+function renderItem(x){
+  const isCard = x.type==='flight'||x.type==='hotel'||x.type==='wedding';
+  const isGap = x.type==='gap';
+  const isTransfer = x.type==='transfer';
+  const needsBooking = (isGap) || (isTransfer && !x.booked);
+  const isTentative = x.type==='event' && !x.booked && x.n && x.n.indexOf('Tentative')===0;
+  const muted = needsBooking || isTentative;
+
+  const tag = isCard ? ITAG[x.type] : (isTransfer ? 'Car' : (isGap ? 'Flight' : ''));
   const title = x.url ? `<a href="${x.url}" target="_blank" rel="noopener">${x.t}</a>` : x.t;
-  return `<div class="trow ${x.type}">
-    <div class="ttag">${TTAG[x.type]}</div>
-    <div class="tdate">${x.tm==='TBD'?'TBD':x.tm}</div>
-    <div class="tbody">
-      <div class="tt">${title}</div>
-      ${x.n?`<div class="tn">${x.n}</div>`:''}
-      ${x.addr?`<div class="taddr">\uD83D\uDCCD ${x.addr}${x.dur?` \u00b7 ${x.dur}`:''}</div>`:''}
-    </div>
+
+  let meta = '';
+  if(isTransfer && !x.booked){
+    meta = `Car needed \u00b7 ${x.dur||''}`;
+  } else if(x.addr){
+    meta = `\uD83D\uDCCD ${x.addr}${x.dur?` \u00b7 ${x.dur}`:''}`;
+  } else if(x.n){
+    meta = x.n;
+  }
+
+  const time = x.tm==='TBD' ? 'TBD' : x.tm;
+  return `<div class="irow ${muted?'muted':''} ${needsBooking?'dashed':''}">
+    <span class="itag">${tag}</span>
+    <span class="itime">${time}</span>
+    <span class="ititle">${title}</span>
+    ${meta?`<span class="imeta">${meta}</span>`:''}
   </div>`;
-}
-function eventBullet(x){
-  const isTransfer = x.type==='transfer' && !x.booked;
-  const isTentative = !isTransfer && !x.booked && x.n && x.n.indexOf('Tentative')===0;
-  const note = isTransfer ? `Car needed \u00b7 ${x.dur||''}` : x.n;
-  const title = x.url ? `<a href="${x.url}" target="_blank" rel="noopener">${x.t}</a>` : x.t;
-  const cls = isTransfer ? 'transfer' : (isTentative ? 'tentative' : '');
-  return `<div class="ev ${cls}"><div class="et">${x.tm==='TBD'?'Time TBD':x.tm}</div><div class="en">${title}</div>${note?`<div class="ed">${note}</div>`:''}</div>`;
 }
 document.getElementById('itin-list').innerHTML = DAYS.map((d,i)=>`
   <details class="daywrap" open>
     <summary class="dayhead">${d.day}</summary>
-    <div class="dayflow">${d.items.map(x=>{
-      const isCard = x.type==='flight'||x.type==='hotel'||x.type==='wedding'||x.type==='gap';
-      return isCard ? travelCard(x) : eventBullet(x);
-    }).join('')}</div>
+    <div class="dayflow">${d.items.map(renderItem).join('')}</div>
   </details>`).join('');
 
 /* Floor plan carousel */
