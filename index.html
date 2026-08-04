@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Amanda & Steven · Wedding Planning Dashboard</title>
+<title>Amanda & Steven · Wedding Dashboard</title>
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -301,7 +301,7 @@
 <div id="gate" style="position:fixed;inset:0;background:var(--cream);z-index:999;display:flex;align-items:center;justify-content:center;padding:22px">
   <form id="gate-form" style="max-width:320px;width:100%;text-align:center">
     <div style="font-family:'Libre Caslon Display',serif;font-size:1.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--plum);margin-bottom:6px">Amanda &amp; Steven</div>
-    <div style="font-size:.9rem;color:var(--muted);margin-bottom:18px">Enter the password to view the wedding planning dashboard</div>
+    <div style="font-size:.9rem;color:var(--muted);margin-bottom:18px">Enter the password to view the wedding dashboard</div>
     <input id="gate-input" type="password" autocomplete="off" style="width:100%;padding:11px 14px;border:1px solid var(--sand);border-radius:10px;background:var(--surface);color:var(--ink);font-family:'Source Sans Pro',sans-serif;font-size:1rem;text-align:center" placeholder="Password">
     <div id="gate-error" style="color:#a23; font-size:.8rem;margin-top:8px;height:1em"></div>
     <button type="submit" style="margin-top:14px;width:100%;padding:11px;border:none;border-radius:99px;background:var(--plum-fill);color:var(--paper);font-family:'Source Sans Pro',sans-serif;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;cursor:pointer">Enter</button>
@@ -508,8 +508,8 @@ const BREAKDOWN = [
     {label:'Final payment', eur:3535.86, usd:4040, date:'Aug 29, 2026', status:'due', note:'Per firm quote received Jul 1, 2026 \u2014 due 5 weeks before the wedding. Brian & Lori\u2019s $5,000 gift covers most of this. Not yet included: possible signature drinks add-on, ~$15/person (~$240 for 16 guests)'},
   ]},
   {n:'Florals & Decor', pay:'Wire transfer', who:'Amanda & Steven', stages:[
-    {label:'Deposit', eur:1305, usd:1491, date:'Feb 14, 2026', status:'paid'},
-    {label:'Final payment', eur:1305, usd:1491, date:'Sep 3, 2026', status:'due'},
+    {label:'Deposit', eur:1430.50, usd:1638, date:'Feb 14, 2026', status:'paid'},
+    {label:'Final payment', eur:1305, usd:1494, date:'Sep 3, 2026', status:'due'},
   ]},
   {n:'Hotels (before/after)', pay:'Credit card', who:'Amanda & Steven', stages:[
     {label:'Booked & paid', eur:2595.91, usd:2966, date:'Dec 21, 2025', status:'paid'},
@@ -546,9 +546,12 @@ const BREAKDOWN = [
   {n:'Flights (before/after)', pay:'Credit card', who:'Amanda & Steven', stages:[
     {label:'Paid in full', eur:1671, usd:1903, date:'Jan 11, 2026', status:'paid', note:'Includes the London \u2192 Barcelona leg, booked Jul 2026'},
   ]},
-  {n:'Transportation', unknown:true, pay:'', who:'Amanda & Steven', note:'Placeholder \u2014 car transfers not yet booked ($400 estimated)'},
+  {n:'Transportation', pay:'Credit card', who:'Amanda & Steven', stages:[
+    {label:'Final payment', eur:372.03, usd:428, date:'Sep 22, 2026', status:'due', note:'Hertz car rental & Addison Lee airport transfer'},
+  ]},
   {n:'Alterations', pay:'Credit card', who:'Amanda & Steven', stages:[
-    {label:'Estimated balance', eur:875, usd:1000, date:'TBD', status:'due', note:'Estimate \u2014 invoice not yet received'},
+    {label:'Deposit', eur:180, usd:206, date:'Jul 29, 2026', status:'paid'},
+    {label:'Final payment', eur:170, usd:195, date:'Sep 10, 2026', status:'due'},
   ]},
   {n:'Tux', pay:'Credit card', who:'Amanda & Steven', stages:[
     {label:'Paid in full', eur:2147.14, usd:2441.66, date:'Jul 6, 2026', status:'paid'},
@@ -575,6 +578,7 @@ const VENDORS = [
   {name:'Easy Cycling', role:'Welcome activity', meta:'Contact: Alejandro', links:[{label:'Instagram', url:'https://www.instagram.com/easycyclingsitges/'}, {label:'Confirmation', url:'https://drive.google.com/file/d/1Cy8qhJ6B_RCTMjD5Gs5qm-nrhLN5sVfL/view?usp=drive_link', contract:true}]},
   {name:'Tailor Maid', role:'Alterations', meta:'', links:[{label:'Instagram', url:'https://www.instagram.com/tailormaidsf/'}]},
   {name:'R. Douglas', role:'Suit & tie', meta:'Contact: Orlando', links:[{label:'Instagram', url:'https://www.instagram.com/rdouglascustom/'}]},
+  {name:'Simply Stated', role:'Stationery', meta:'Contact: Brian', links:[{label:'Instagram', url:'https://www.instagram.com/simplystated.la/'}]},
 ];
 
 const TASKS = [
@@ -664,8 +668,9 @@ const FLOORPLANS = [
 
 const DAYS = [
   {day:'Tuesday, Sept 22', items:[
+    {type:'event', tm:'10:00 AM', t:'Pick up car rental', n:'Hertz'},
     {type:'flight', tm:'5:55 PM', t:'San Francisco \u2192 London Heathrow', n:'Virgin Atlantic VS0020 \u00b7 conf DVBWFL', addr:'SFO \u2192 LHR', dur:'10h 20m \u00b7 lands 12:15 PM (+1)'},
-    {type:'transfer', tm:'TBD', t:'Heathrow \u2192 London Marriott, Grosvenor Square', n:'Car not booked yet', dur:'\u2248 45 min'},
+    {type:'transfer', tm:'TBD', t:'Heathrow \u2192 London Marriott, Grosvenor Square', n:'Booking confirmation #120033', dur:'\u2248 45 min', booked:true},
     {type:'hotel', tm:'4:00 PM', t:'Check in: London Marriott Hotel Grosvenor Square', n:'3 nights', addr:'Grosvenor Square, London W1K 6JP', url:'https://www.marriott.com/en-us/hotels/londt-london-marriott-hotel-grosvenor-square/overview/'},
   ]},
   {day:'Wednesday, Sept 23', items:[
@@ -715,7 +720,8 @@ const DAYS = [
     {type:'event', tm:'2:00 PM', t:'Paella cooking class', n:'At a vineyard \u00b7 casual, comfortable shoes \u00b7 group transport via coordinator'},
   ]},
   {day:'Saturday, Oct 3 \u2014 Wedding Day', items:[
-    {type:'event', tm:'TBD', t:'Getting ready', n:'Honeymoon suite'},
+    {type:'event', tm:'11:00 AM', t:'Light brunch/lunch', n:''},
+    {type:'event', tm:'2:30 PM', t:'Getting ready', n:'Honeymoon suite \u00b7 hair/make-up artists arrive'},
     {type:'event', tm:'5:00 PM', t:'Cocktail hour', n:'Charcuterie, cava & local music'},
     {type:'event', tm:'7:00 PM', t:'Ceremony', n:'Rooftop, at sunset'},
     {type:'event', tm:'8:00 PM', t:'Dinner', n:'Private chef, toasts'},
@@ -755,6 +761,10 @@ const DAYS = [
     {type:'hotel', tm:'10:00 AM', t:'Check out: The London EDITION', n:'', addr:'10 Berners Street, London W1T 3NP'},
     {type:'transfer', tm:'TBD', t:'The London EDITION \u2192 Heathrow', n:'Car not booked yet', dur:'\u2248 45 min'},
     {type:'flight', tm:'10:45 AM', t:'London Heathrow \u2192 San Francisco', n:'BA0285 \u00b7 conf Y9RHCA', addr:'LHR \u2192 SFO', dur:'11h 5m \u00b7 lands 1:50 PM'},
+    {type:'event', tm:'2:00 PM', t:'Pick up car rental', n:'Hertz'},
+  ]},
+  {day:'Monday, Oct 12', items:[
+    {type:'event', tm:'2:00 PM', t:'Drop off rental car', n:'16th St Hertz'},
   ]},
 ];
 
@@ -1161,8 +1171,8 @@ function travelCard(x){
   </div>`;
 }
 function eventBullet(x){
-  const isTransfer = x.type==='transfer';
-  const isTentative = !isTransfer && x.n && x.n.indexOf('Tentative')===0;
+  const isTransfer = x.type==='transfer' && !x.booked;
+  const isTentative = !isTransfer && !x.booked && x.n && x.n.indexOf('Tentative')===0;
   const note = isTransfer ? `Car needed \u00b7 ${x.dur||''}` : x.n;
   const title = x.url ? `<a href="${x.url}" target="_blank" rel="noopener">${x.t}</a>` : x.t;
   const cls = isTransfer ? 'transfer' : (isTentative ? 'tentative' : '');
