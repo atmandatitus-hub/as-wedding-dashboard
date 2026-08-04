@@ -199,7 +199,7 @@
   .itin::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--sand)}
   .dayflow{margin-top:6px}
 
-  .irow{display:grid;grid-template-columns:56px 68px minmax(140px,auto) 1fr;align-items:baseline;column-gap:12px;padding:8px 4px;border-bottom:1px solid var(--sand)}
+  .irow{display:grid;grid-template-columns:56px minmax(68px,max-content) minmax(140px,auto) 1fr;align-items:baseline;column-gap:12px;padding:8px 4px;border-bottom:1px solid var(--sand)}
   .irow:last-child{border-bottom:none}
   .itag{font-family:'Source Sans Pro',sans-serif;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--plum)}
   .itime{font-family:'Source Sans Pro',sans-serif;font-size:.82rem;font-weight:600;color:var(--ink);white-space:nowrap}
@@ -213,12 +213,39 @@
   .irow.dashed{border-left:2px dashed var(--muted);padding-left:8px;margin-left:-10px}
 
   @media (max-width:640px){
-    .irow{grid-template-columns:44px 58px 1fr;row-gap:2px}
+    .irow{grid-template-columns:44px minmax(58px,max-content) 1fr;row-gap:2px}
     .imeta{grid-column:1 / -1;padding-left:0}
   }
 
   .daywrap{border-bottom:1px solid var(--sand);padding-bottom:4px;margin-bottom:4px}
   .daywrap:last-child{border-bottom:none}
+  .calweekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:14px 0 6px}
+  .calweekdays span{text-align:center;font-family:'Source Sans Pro',sans-serif;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .cday{position:relative;aspect-ratio:1;border:1px solid var(--sand);border-radius:10px;background:var(--surface);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px;transition:all .15s;font-family:inherit;overflow:hidden}
+  .cday:disabled{border-color:transparent;background:transparent;cursor:default}
+  .cnum{font-family:'Source Sans Pro',sans-serif;font-size:.82rem;color:var(--muted)}
+  .cday:disabled .cnum{color:transparent}
+  .cday.active .cnum{color:var(--ink);font-weight:600}
+  .cday.active:hover{border-color:var(--plum)}
+  .cday.selected{background:var(--plum-fill);border-color:var(--plum-fill)}
+  .cday.selected .cnum{color:var(--paper)}
+  .cday.flightday::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--clay)}
+  .cday.wedding{background:var(--plum-fill);border-color:var(--plum-fill)}
+  .cday.wedding .cnum{color:var(--paper);font-weight:700}
+  .cday.wedding.selected{background:var(--plum-2);border-color:var(--plum-2)}
+  .cring{position:absolute;top:3px;right:5px;font-size:.62rem;color:var(--paper)}
+  .ccount{display:none}
+  .cglyph{font-size:.6rem;line-height:1;display:inline-block;margin:0 1px}
+  .cglyph.flight{color:var(--plum-fill)}
+  .cglyph.hotel{color:var(--muted)}
+  .cglyph.dashed{color:var(--muted);opacity:.6}
+  .cday.selected .cglyph{color:var(--paper);opacity:1}
+  .ddhead{font-family:'Source Sans Pro',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--sage-deep);margin:24px 0 10px}
+  .callegend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px}
+  .callegend span{display:flex;align-items:center;gap:5px;font-family:'Source Sans Pro',sans-serif;font-size:.74rem;color:var(--muted)}
+  #itin-daydetail{min-height:120px}
+
   .dayhead{font-family:'Source Sans Pro',sans-serif;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sage-deep);margin:26px 0 10px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px}
   .dayhead::-webkit-details-marker{display:none}
   .dayhead::before{content:"\25B8";font-size:.8rem;color:var(--clay);transition:transform .15s;flex:0 0 auto}
@@ -292,17 +319,7 @@
 </head>
 <body>
 
-<div id="gate" style="position:fixed;inset:0;background:var(--cream);z-index:999;display:flex;align-items:center;justify-content:center;padding:22px">
-  <form id="gate-form" style="max-width:320px;width:100%;text-align:center">
-    <div style="font-family:'Libre Caslon Display',serif;font-size:1.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--plum);margin-bottom:6px">Amanda &amp; Steven</div>
-    <div style="font-size:.9rem;color:var(--muted);margin-bottom:18px">Enter the password to view the wedding dashboard</div>
-    <input id="gate-input" type="password" autocomplete="off" style="width:100%;padding:11px 14px;border:1px solid var(--sand);border-radius:10px;background:var(--surface);color:var(--ink);font-family:'Source Sans Pro',sans-serif;font-size:1rem;text-align:center" placeholder="Password">
-    <div id="gate-error" style="color:#a23; font-size:.8rem;margin-top:8px;height:1em"></div>
-    <button type="submit" style="margin-top:14px;width:100%;padding:11px;border:none;border-radius:99px;background:var(--plum-fill);color:var(--paper);font-family:'Source Sans Pro',sans-serif;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;cursor:pointer">Enter</button>
-  </form>
-</div>
-
-<div id="site-content" style="display:none">
+<div id="site-content">
 
 <div class="topbar">
   <div class="wrap">
@@ -412,9 +429,10 @@
   <!-- ITINERARY & TRAVEL -->
   <section class="panel" id="itin" role="tabpanel">
     <h2 class="secttl">The whole trip</h2>
-    <p class="sectsub">Flights, hotels, and the day-by-day plan, in one line &middot; Sept 22 – Oct 12.</p>
+    <p class="sectsub">Sept 22 – Oct 12 &middot; tap a day to see the hour-by-hour plan.</p>
     <div class="note">All flights are booked and confirmed.</div>
-    <div id="itin-list"></div>
+    <div id="itin-calendar"></div>
+    <div id="itin-daydetail"></div>
   </section>
 
   <!-- ROOMS -->
@@ -1180,11 +1198,66 @@ function renderItem(x){
     ${meta?`<span class="imeta">${meta}</span>`:''}
   </div>`;
 }
-document.getElementById('itin-list').innerHTML = DAYS.map((d,i)=>`
-  <details class="daywrap" open>
-    <summary class="dayhead">${d.day}</summary>
-    <div class="dayflow">${d.items.map(renderItem).join('')}</div>
-  </details>`).join('');
+const IT_MONTHS = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+function parseDayLabel(label){
+  const m = label.match(/(\w+)\s+(\d{1,2})/);
+  return new Date(2026, IT_MONTHS[m[1].slice(0,3)], +m[2]);
+}
+const DAY_DATES = DAYS.map(d=>({...d, date: parseDayLabel(d.day)}));
+
+const WD = ['S','M','T','W','T','F','S'];
+const gridStart = new Date(DAY_DATES[0].date);
+gridStart.setDate(gridStart.getDate() - gridStart.getDay());
+const gridEnd = new Date(DAY_DATES[DAY_DATES.length-1].date);
+gridEnd.setDate(gridEnd.getDate() + (6 - gridEnd.getDay()));
+
+let calCells = '';
+let cursor = new Date(gridStart);
+let selectedIdx = null;
+while(cursor <= gridEnd){
+  const match = DAY_DATES.find(d=>d.date.toDateString()===cursor.toDateString());
+  const idx = match ? DAY_DATES.indexOf(match) : -1;
+  const inTrip = idx !== -1;
+  const isWedding = inTrip && match.day.indexOf('Wedding Day')!==-1;
+  let dots = '', hasFlight = false, hasHotelChange = false;
+  if(inTrip){
+    hasFlight = match.items.some(x=>x.type==='flight'||x.type==='gap');
+    hasHotelChange = match.items.some(x=>x.type==='hotel'||x.type==='wedding');
+    const hasNeedsBooking = match.items.some(x=>x.type==='gap'||(x.type==='transfer'&&!x.booked));
+    const count = match.items.length;
+    dots = `<div class="ccount">${count} item${count===1?'':'s'}</div>` +
+      (hasFlight?'<span class="cglyph flight">\u25CF</span>':'') +
+      (hasHotelChange?'<span class="cglyph hotel">\u25A0</span>':'') +
+      (hasNeedsBooking?'<span class="cglyph dashed">\u25CB</span>':'');
+  }
+  calCells += `<button class="cday ${inTrip?'active':''} ${isWedding?'wedding':''} ${hasFlight?'flightday':''}" ${inTrip?`data-idx="${idx}"`:'disabled'}>
+    ${isWedding?'<span class="cring">\u2661</span>':''}<span class="cnum">${cursor.getDate()}</span>${dots}
+  </button>`;
+  cursor.setDate(cursor.getDate()+1);
+}
+document.getElementById('itin-calendar').innerHTML = `
+  <div class="calweekdays">${WD.map(w=>`<span>${w}</span>`).join('')}</div>
+  <div class="calgrid">${calCells}</div>
+  <div class="callegend">
+    <span><span class="cglyph flight">\u25CF</span> Flight</span>
+    <span><span class="cglyph hotel">\u25A0</span> Hotel change</span>
+    <span><span class="cglyph dashed">\u25CB</span> Needs booking</span>
+    <span><span class="cring" style="position:static">\u2661</span> Wedding day</span>
+  </div>`;
+
+function showDayDetail(idx){
+  selectedIdx = idx;
+  document.querySelectorAll('.cday').forEach(b=>b.classList.remove('selected'));
+  const btn = document.querySelector(`.cday[data-idx="${idx}"]`);
+  if(btn) btn.classList.add('selected');
+  const d = DAY_DATES[idx];
+  document.getElementById('itin-daydetail').innerHTML = `
+    <div class="ddhead">${d.day}</div>
+    <div class="dayflow">${d.items.map(renderItem).join('')}</div>`;
+  document.getElementById('itin-daydetail').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+document.querySelectorAll('.cday.active').forEach(b=>b.addEventListener('click', ()=>showDayDetail(+b.dataset.idx)));
+showDayDetail(DAY_DATES.findIndex(d=>d.day.indexOf('Wedding Day')!==-1));
 
 /* Floor plan carousel */
 let fpIndex = 0;
@@ -1248,21 +1321,6 @@ tabs.forEach(tab=>tab.addEventListener('click',()=>{
   document.getElementById(tab.dataset.p).classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
 }));
-
-/* Simple password gate. Change SITE_PASSWORD below to whatever you want the family to use.
-   Note: this is a friendly "keep casual visitors out" gate, not real security — anyone who
-   views the page source can see the password. Fine for a family site, not for anything sensitive. */
-const SITE_PASSWORD = 'sitges2026';
-document.getElementById('gate-form').addEventListener('submit', function(e){
-  e.preventDefault();
-  const val = document.getElementById('gate-input').value;
-  if(val === SITE_PASSWORD){
-    document.getElementById('gate').style.display = 'none';
-    document.getElementById('site-content').style.display = 'block';
-  } else {
-    document.getElementById('gate-error').textContent = 'Incorrect password — try again.';
-  }
-});
 </script>
 </div>
 </body>
