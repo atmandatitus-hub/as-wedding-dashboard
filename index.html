@@ -319,7 +319,17 @@
 </head>
 <body>
 
-<div id="site-content">
+<div id="gate" style="position:fixed;inset:0;background:var(--cream);z-index:999;display:flex;align-items:center;justify-content:center;padding:22px">
+  <form id="gate-form" style="max-width:320px;width:100%;text-align:center">
+    <div style="font-family:'Libre Caslon Display',serif;font-size:1.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--plum);margin-bottom:6px">Amanda &amp; Steven</div>
+    <div style="font-size:.9rem;color:var(--muted);margin-bottom:18px">Enter the password to view the wedding dashboard</div>
+    <input id="gate-input" type="password" autocomplete="off" style="width:100%;padding:11px 14px;border:1px solid var(--sand);border-radius:10px;background:var(--surface);color:var(--ink);font-family:'Source Sans Pro',sans-serif;font-size:1rem;text-align:center" placeholder="Password">
+    <div id="gate-error" style="color:#a23; font-size:.8rem;margin-top:8px;height:1em"></div>
+    <button type="submit" style="margin-top:14px;width:100%;padding:11px;border:none;border-radius:99px;background:var(--plum-fill);color:var(--paper);font-family:'Source Sans Pro',sans-serif;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;cursor:pointer">Enter</button>
+  </form>
+</div>
+
+<div id="site-content" style="display:none">
 
 <div class="topbar">
   <div class="wrap">
@@ -1321,6 +1331,22 @@ tabs.forEach(tab=>tab.addEventListener('click',()=>{
   document.getElementById(tab.dataset.p).classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
 }));
+
+/* Simple password gate. Change SITE_PASSWORD below to whatever you want the family to use —
+   you can edit this line directly on GitHub without needing to come back for it.
+   Note: this is a friendly "keep casual visitors out" gate, not real security — anyone who
+   views the page source can see the password. Fine for a family site, not for anything sensitive. */
+const SITE_PASSWORD = 'sitges2026';
+document.getElementById('gate-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  const val = document.getElementById('gate-input').value;
+  if(val === SITE_PASSWORD){
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('site-content').style.display = 'block';
+  } else {
+    document.getElementById('gate-error').textContent = 'Incorrect password — try again.';
+  }
+});
 </script>
 </div>
 </body>
