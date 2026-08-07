@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Amanda & Steven · Wedding Planning Dashboard</title>
+<title>Amanda & Steven · Wedding Dashboard</title>
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -322,7 +322,7 @@
 <div id="gate" style="position:fixed;inset:0;background:var(--cream);z-index:999;display:flex;align-items:center;justify-content:center;padding:22px">
   <form id="gate-form" style="max-width:320px;width:100%;text-align:center">
     <div style="font-family:'Libre Caslon Display',serif;font-size:1.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--plum);margin-bottom:6px">Amanda &amp; Steven</div>
-    <div style="font-size:.9rem;color:var(--muted);margin-bottom:18px">Enter the password to view the wedding planning dashboard</div>
+    <div style="font-size:.9rem;color:var(--muted);margin-bottom:18px">Enter the password to view the wedding dashboard</div>
     <input id="gate-input" type="password" autocomplete="off" style="width:100%;padding:11px 14px;border:1px solid var(--sand);border-radius:10px;background:var(--surface);color:var(--ink);font-family:'Source Sans Pro',sans-serif;font-size:1rem;text-align:center" placeholder="Password">
     <div id="gate-error" style="color:#a23; font-size:.8rem;margin-top:8px;height:1em"></div>
     <button type="submit" style="margin-top:14px;width:100%;padding:11px;border:none;border-radius:99px;background:var(--plum-fill);color:var(--paper);font-family:'Source Sans Pro',sans-serif;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;cursor:pointer">Enter</button>
@@ -690,7 +690,7 @@ const FLOORPLANS = [
 
 const DAYS = [
   {day:'Tuesday, Sept 22', items:[
-    {type:'event', tm:'10:00 AM', t:'Pick up car rental', n:'Hertz'},
+    {type:'event', tm:'10:00 AM', t:'Pick up car rental', n:'Hertz, 16th St'},
     {type:'flight', tm:'5:55 PM', t:'San Francisco \u2192 London Heathrow', n:'Virgin Atlantic VS0020 \u00b7 conf DVBWFL', addr:'SFO \u2192 LHR', dur:'10h 20m \u00b7 lands 12:15 PM (+1)'},
     {type:'transfer', tm:'TBD', t:'Heathrow \u2192 London Marriott, Grosvenor Square', n:'Booking confirmation #120033', dur:'\u2248 45 min', booked:true},
     {type:'hotel', tm:'4:00 PM', t:'Check in: London Marriott Hotel Grosvenor Square', n:'3 nights', addr:'Grosvenor Square, London W1K 6JP', url:'https://www.marriott.com/en-us/hotels/londt-london-marriott-hotel-grosvenor-square/overview/'},
@@ -706,7 +706,7 @@ const DAYS = [
     {type:'hotel', tm:'10:00 AM', t:'Check out: London Marriott Hotel Grosvenor Square', n:'', addr:'Grosvenor Square, London W1K 6JP'},
     {type:'transfer', tm:'TBD', t:'London Marriott \u2192 London City Airport (LCY)', n:'Car not booked yet', dur:'\u2248 30\u201340 min'},
     {type:'flight', tm:'4:05 PM', t:'London City \u2192 Barcelona', n:'BA8759 \u00b7 booking ref XA8U6I', addr:'LCY \u2192 BCN', dur:'2h 10m \u00b7 lands 7:15 PM'},
-    {type:'transfer', tm:'TBD', t:'Barcelona Airport \u2192 Cotton House Hotel', n:'Car not booked yet', dur:'\u2248 25 min'},
+    {type:'transfer', tm:'7:15 PM', t:'Barcelona Airport \u2192 Cotton House Hotel', n:'Car not booked yet \u2014 estimated for flight landing time', dur:'\u2248 25 min'},
     {type:'hotel', tm:'4:00 PM', t:'Check in: Cotton House Hotel, Autograph Collection', n:'3 nights \u00b7 conf 72839956', addr:'Gran Via de les Corts Catalanes 670, Barcelona 08010', url:'https://hotelcottonhouse.com/en/'},
     {type:'event', tm:'TBD', t:'Dinner', n:'Tentative \u2014 not planned yet'},
   ]},
@@ -783,7 +783,7 @@ const DAYS = [
     {type:'hotel', tm:'10:00 AM', t:'Check out: The London EDITION', n:'', addr:'10 Berners Street, London W1T 3NP'},
     {type:'transfer', tm:'TBD', t:'The London EDITION \u2192 Heathrow', n:'Car not booked yet', dur:'\u2248 45 min'},
     {type:'flight', tm:'10:45 AM', t:'London Heathrow \u2192 San Francisco', n:'BA0285 \u00b7 conf Y9RHCA', addr:'LHR \u2192 SFO', dur:'11h 5m \u00b7 lands 1:50 PM'},
-    {type:'event', tm:'2:00 PM', t:'Pick up car rental', n:'Hertz'},
+    {type:'event', tm:'2:00 PM', t:'Pick up car rental', n:'Hertz, SFO'},
   ]},
   {day:'Monday, Oct 12', items:[
     {type:'event', tm:'2:00 PM', t:'Drop off rental car', n:'16th St Hertz'},
@@ -799,7 +799,7 @@ const DAYS = [
 const ROOMS = [
   {fl:'Ground floor', rooms:[
     {n:'Suite 1', bed:'King or Two Singles · Ensuite', g:'Bob & Jan'},
-    {n:'Suite 2', bed:'King or Two Singles · Ensuite', g:''},
+    {n:'Suite 2', bed:'King or Two Singles · Ensuite', g:'Vinny / Jimmy'},
     {n:'Suite 3', bed:'King · Ensuite', g:'Lori & Brian'},
     {n:'Suite 4', bed:'King or Two Singles · Ensuite', g:'Vinny / Jimmy'},
   ]},
@@ -813,8 +813,8 @@ const ROOMS = [
   ]},
   {fl:'Second floor', rooms:[
     {n:'Suite 11', bed:'King or Two Singles · Ensuite', g:'Amanda & Steven', us:true},
-    {n:'Suite 12', bed:'King · Ensuite', g:'Vinny / Jimmy'},
-    {n:'Suite 13', bed:'King · Ensuite', g:'Katie & Kalleb'},
+    {n:'Suite 12', bed:'King · Ensuite', g:'Katie & Kalleb'},
+    {n:'Suite 13', bed:'King · Ensuite', g:'Wedding-day getting ready'},
     {n:'Honeymoon Suite', bed:'King · Ensuite', g:'Wedding-day getting ready'},
   ]},
 ];
