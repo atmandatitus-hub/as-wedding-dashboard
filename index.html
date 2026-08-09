@@ -652,6 +652,7 @@ const TASKS = [
   {ph:'1 month out', c:'Travel', t:'Book dinner/activities — London', w:'Aug 30', s:'done'},
   {ph:'1 month out', c:'Travel', t:'Book dinner/activities — Barcelona', w:'Aug 31', s:'open'},
   {ph:'1 month out', c:'Décor', t:'Design stationery/signage (place cards, menus, etc.)', w:'Aug 31', s:'progress'},
+  {ph:'1 month out', c:'Prep', t:'Confirm schedule and details with cooking class', w:'Aug 31', s:'open'},
   {ph:'1 month out', c:'Ceremony', t:'Write wedding vows', w:'Sep 1', s:'progress'},
   {ph:'1 month out', c:'Ceremony', t:'Talk to officiant — vows & advice from the fam', w:'Sep 1', s:'open'},
   {ph:'1 month out', c:'Attire', t:'Buy wrap or coat, if needed', w:'Sep 1', s:'open'},
@@ -664,7 +665,9 @@ const TASKS = [
   {ph:'1 month out', c:'Attire', t:'Schedule ring cleaning in Barcelona', w:'Sep 3', s:'open'},
   {ph:'1 month out', c:'Logistics', t:'Pay final balance — florals/decor', w:'Sep 3', s:'open'},
   {ph:'1 month out', c:'Attire', t:'Attend final dress fitting', w:'Sep 10', s:'open'},
-  {ph:'1 month out', c:'Logistics', t:'Send the day-of schedule to everyone', w:'Sep 14', s:'open'},
+  {ph:'1 month out', c:'Photo', t:'Meet with photographer', w:'Sep 10', s:'open'},
+  {ph:'1 month out', c:'Photo', t:'Meet with videographer', w:'Sep 10', s:'open'},
+  {ph:'1 month out', c:'Logistics', t:'Send the day-of schedule to everyone', w:'Sep 17', s:'open'},
 
   {ph:'Wedding week', c:'Prep', t:'Meet coordinator (Amaré studio)', w:'Sep 28', s:'open'},
   {ph:'Wedding week', c:'Dinner', t:'Attend menu tasting in Barcelona (Cloud9)', w:'Sep 28', s:'open'},
@@ -734,9 +737,9 @@ const DAYS = [
     {type:'event', tm:'TBD', t:'Activity / dinner', n:'Tentative \u2014 not planned yet'},
   ]},
   {day:'Thursday, Oct 1', items:[
-    {type:'event', tm:'10:00 AM', t:'Spray tan', n:'Bronceado Elite \u00b7 paid'},
+    {type:'event', tm:'10:00 AM', t:'Spray tan', n:'Arttan \u00b7 Carrer de l\u2019Avenir 70, Barcelona \u00b7 paid'},
     {type:'hotel', tm:'10:00 AM', t:'Check out: ME Sitges Terramar', n:'', addr:'Pg. Mar\u00edtimo 80, 08870 Sitges'},
-    {type:'transfer', tm:'TBD', t:'Sitges \u2192 Masia Victoria', n:'Car not booked yet', dur:'\u2248 20 min'},
+    {type:'transfer', tm:'3:30 PM', t:'Sitges \u2192 Masia Victoria', n:'Car not booked yet', dur:'\u2248 20 min'},
     {type:'wedding', tm:'4:00 PM', t:'Check in to Masia Victoria', n:'Home for the wedding week', addr:'Carrer de Canyelles 10, 08810 Sant Pere de Ribes', url:'https://www.instagram.com/sitgesluxuryrentals/'},
   ]},
   {day:'Friday, Oct 2', items:[
@@ -1028,7 +1031,7 @@ const STNEXT = {open:'progress', progress:'done', done:'open'};
 /* --- Live sync with your Google Sheet, via the Apps Script web app ---
    Paste your deployed /exec URL below once you've set it up. Until then,
    the dashboard just uses the built-in checklist below, unchanged. */
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyB7n8k-tNesSvaaXd6vj0eanoMj_S95V3-HXqOD2dLaeqPVhF5CNYnkfGVT2hZIG7jaQ/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzvHBWjwYp9VwLgfjfqNDV9LOGgwVe_kDZe1lifP_0wq60QgueUy0Qq_bpXN4ckm3QMvA/exec';
 
 const STATUS_FROM_SHEET = {'done':'done', 'in progress':'progress', 'not started':'open'};
 const STATUS_TO_SHEET = {open:'not started', progress:'in progress', done:'done'};
