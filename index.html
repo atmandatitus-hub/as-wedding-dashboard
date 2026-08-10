@@ -579,7 +579,7 @@ const BREAKDOWN = [
     {label:'Paid in full', eur:2147.14, usd:2441.66, date:'Jul 6, 2026', status:'paid'},
   ]},
   {n:'Shoes & Bow Tie', pay:'Credit card', who:'Amanda & Steven', stages:[
-    {label:'Bow tie', eur:77, usd:88, date:'Jul 26, 2026', status:'due', note:'Shoes still needed \u2014 not yet priced'},
+    {label:'Paid in full', eur:446, usd:515, date:'Jul 26, 2026', status:'paid'},
   ]},
 ];
 
@@ -636,7 +636,7 @@ const TASKS = [
   {ph:'3 months out', c:'Attire', t:'Schedule suit/tux fitting', w:'Jul 1', s:'done'},
   {ph:'3 months out', c:'Attire', t:'Attend tux fitting #1', w:'Jul 6', s:'done'},
   {ph:'3 months out', c:'Attire', t:'Attend dress fitting #1', w:'Jul 29', s:'done'},
-  {ph:'3 months out', c:'Attire', t:'Buy groom shoes, socks & bow tie', w:'Jul 31', s:'progress'},
+  {ph:'3 months out', c:'Attire', t:'Buy groom shoes, socks & bow tie', w:'Jul 31', s:'done'},
   {ph:'3 months out', c:'Travel', t:'Book flights: Barcelona → Mallorca', w:'Jul 31', s:'done'},
   {ph:'3 months out', c:'Travel', t:'Book flights: London → Barcelona', w:'Jul 31', s:'done'},
   {ph:'3 months out', c:'Photo', t:'Book a photographer for Sept 29', w:'Aug 1', s:'progress'},
@@ -1073,6 +1073,14 @@ function updateProgress(){
   document.getElementById('todo-bar').style.width = pct+'%';
   document.getElementById('todo-bar-progress').style.width = Math.round(progress/total*100)+'%';
   document.getElementById('todo-prog').textContent = `${done} of ${total} done \u00b7 ${pct}% there`;
+  const taskChart = document.getElementById('chart-tasks');
+  if(taskChart && typeof donut==='function'){
+    taskChart.innerHTML = donut(pct, 'Tasks done', `${done} of ${total} complete`);
+    requestAnimationFrame(()=>{
+      const c = taskChart.querySelector('circle.prog');
+      if(c) c.setAttribute('stroke-dasharray', c.dataset.dash);
+    });
+  }
 }
 function taskHTML(t,i){
   const label = t.link ? `<a href="${t.link}" target="_blank" rel="noopener">${t.t}</a>` : t.t;
@@ -1179,7 +1187,6 @@ function donut(pct, label, sub){
   <div class="csub">${sub}</div>`;
 }
 document.getElementById('chart-vendors').innerHTML = donut(100, 'Vendors booked', 'All 17 secured');
-document.getElementById('chart-tasks').innerHTML = donut(pct, 'Tasks done', `${doneTasks} of ${totalTasks} complete`);
 requestAnimationFrame(()=>document.querySelectorAll('.donut circle.prog').forEach(c=>{c.setAttribute('stroke-dasharray', c.dataset.dash);}));
 
 
