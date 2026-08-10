@@ -651,12 +651,11 @@ const TASKS = [
 
   {ph:'1 month out', c:'Travel', t:'Book dinner/activities — London', w:'Aug 30', s:'done'},
   {ph:'1 month out', c:'Travel', t:'Book dinner/activities — Barcelona', w:'Aug 31', s:'open'},
+  {ph:'1 month out', c:'Ceremony', t:'Meet with Megan to discuss ceremony', w:'Aug 31', s:'progress'},
   {ph:'1 month out', c:'Décor', t:'Design stationery/signage (place cards, menus, etc.)', w:'Aug 31', s:'progress'},
   {ph:'1 month out', c:'Prep', t:'Confirm schedule and details with cooking class', w:'Aug 31', s:'open'},
   {ph:'1 month out', c:'Ceremony', t:'Write wedding vows', w:'Sep 1', s:'progress'},
   {ph:'1 month out', c:'Ceremony', t:'Talk to officiant — vows & advice from the fam', w:'Sep 1', s:'open'},
-  {ph:'1 month out', c:'Attire', t:'Buy wrap or coat, if needed', w:'Sep 1', s:'open'},
-  {ph:'1 month out', c:'Travel', t:'Book dinner/activities — Sitges', w:'Sep 1', s:'progress'},
   {ph:'1 month out', c:'Travel', t:'Book dinner/activities — Mallorca', w:'Sep 2', s:'progress'},
   {ph:'1 month out', c:'Photo', t:'Make checklist of desired video shots', w:'Sep 3', s:'open'},
   {ph:'1 month out', c:'Photo', t:'Make checklist of desired photo shots', w:'Sep 3', s:'open'},
@@ -695,7 +694,7 @@ const DAYS = [
   {day:'Tuesday, Sept 22', items:[
     {type:'event', tm:'10:00 AM', t:'Pick up car rental', n:'Hertz, 16th St'},
     {type:'flight', tm:'5:55 PM', t:'San Francisco \u2192 London Heathrow', n:'Virgin Atlantic VS0020 \u00b7 conf DVBWFL', addr:'SFO \u2192 LHR', dur:'10h 20m \u00b7 lands 12:15 PM (+1)'},
-    {type:'transfer', tm:'TBD', t:'Heathrow \u2192 London Marriott, Grosvenor Square', n:'Booking confirmation #120033', dur:'\u2248 45 min', booked:true},
+    {type:'transfer', tm:'6:00 PM', t:'Heathrow \u2192 London Marriott, Grosvenor Square', n:'Booking confirmation #120033', dur:'\u2248 45 min', booked:true},
     {type:'hotel', tm:'4:00 PM', t:'Check in: London Marriott Hotel Grosvenor Square', n:'3 nights', addr:'Grosvenor Square, London W1K 6JP', url:'https://www.marriott.com/en-us/hotels/londt-london-marriott-hotel-grosvenor-square/overview/'},
   ]},
   {day:'Wednesday, Sept 23', items:[
@@ -706,11 +705,11 @@ const DAYS = [
     {type:'event', tm:'6:30 PM', t:'Dinner reservation', n:'Lucky Cat, Mayfair \u00b7 party of 3', url:'https://www.gordonramsayrestaurants.com/lucky-cat/'},
   ]},
   {day:'Friday, Sept 25', items:[
-    {type:'hotel', tm:'10:00 AM', t:'Check out: London Marriott Hotel Grosvenor Square', n:'', addr:'Grosvenor Square, London W1K 6JP'},
-    {type:'transfer', tm:'TBD', t:'London Marriott \u2192 London City Airport (LCY)', n:'Car not booked yet', dur:'\u2248 30\u201340 min'},
+    {type:'hotel', tm:'12:00 PM', t:'Check out: London Marriott Hotel Grosvenor Square', n:'', addr:'Grosvenor Square, London W1K 6JP'},
+    {type:'transfer', tm:'12:00 PM', t:'London Marriott \u2192 London City Airport (LCY)', n:'Car not booked yet', dur:'\u2248 30\u201340 min'},
     {type:'flight', tm:'4:05 PM', t:'London City \u2192 Barcelona', n:'BA8759 \u00b7 booking ref XA8U6I', addr:'LCY \u2192 BCN', dur:'2h 10m \u00b7 lands 7:15 PM'},
     {type:'transfer', tm:'7:15 PM', t:'Barcelona Airport \u2192 Cotton House Hotel', n:'Car not booked yet \u2014 estimated for flight landing time', dur:'\u2248 25 min'},
-    {type:'hotel', tm:'4:00 PM', t:'Check in: Cotton House Hotel, Autograph Collection', n:'3 nights \u00b7 conf 72839956', addr:'Gran Via de les Corts Catalanes 670, Barcelona 08010', url:'https://hotelcottonhouse.com/en/'},
+    {type:'hotel', tm:'8:00 PM', t:'Check in: Cotton House Hotel, Autograph Collection', n:'3 nights \u00b7 conf 72839956', addr:'Gran Via de les Corts Catalanes 670, Barcelona 08010', url:'https://hotelcottonhouse.com/en/'},
     {type:'event', tm:'TBD', t:'Dinner', n:'Tentative \u2014 not planned yet'},
   ]},
   {day:'Saturday, Sept 26', items:[
@@ -722,7 +721,7 @@ const DAYS = [
     {type:'event', tm:'TBD', t:'Activity / dinner', n:'Tentative \u2014 not planned yet'},
   ]},
   {day:'Monday, Sept 28', items:[
-    {type:'hotel', tm:'10:00 AM', t:'Check out: Cotton House Hotel', n:'', addr:'Gran Via de les Corts Catalanes 670, Barcelona 08010'},
+    {type:'hotel', tm:'12:00 PM', t:'Check out: Cotton House Hotel', n:'', addr:'Gran Via de les Corts Catalanes 670, Barcelona 08010'},
     {type:'event', tm:'TBD', t:'Ring cleaning @ Tiffany', n:''},
     {type:'event', tm:'TBD', t:'Cloud9 wedding menu tasting', n:'Barcelona'},
     {type:'transfer', tm:'TBD', t:'Barcelona \u2192 ME Sitges Terramar', n:'Car not booked yet', dur:'\u2248 40 min by car, or 35 min by train'},
@@ -738,7 +737,7 @@ const DAYS = [
   ]},
   {day:'Thursday, Oct 1', items:[
     {type:'event', tm:'10:00 AM', t:'Spray tan', n:'Arttan \u00b7 Carrer de l\u2019Avenir 70, Barcelona \u00b7 paid'},
-    {type:'hotel', tm:'10:00 AM', t:'Check out: ME Sitges Terramar', n:'', addr:'Pg. Mar\u00edtimo 80, 08870 Sitges'},
+    {type:'hotel', tm:'12:00 PM', t:'Check out: ME Sitges Terramar', n:'', addr:'Pg. Mar\u00edtimo 80, 08870 Sitges'},
     {type:'transfer', tm:'3:30 PM', t:'Sitges \u2192 Masia Victoria', n:'Car not booked yet', dur:'\u2248 20 min'},
     {type:'wedding', tm:'4:00 PM', t:'Check in to Masia Victoria', n:'Home for the wedding week', addr:'Carrer de Canyelles 10, 08810 Sant Pere de Ribes', url:'https://www.instagram.com/sitgesluxuryrentals/'},
   ]},
@@ -758,9 +757,9 @@ const DAYS = [
   ]},
   {day:'Monday, Oct 5', items:[
     {type:'wedding', tm:'10:00 AM', t:'Check out of Masia Victoria', n:'', addr:'Carrer de Canyelles 10, 08810 Sant Pere de Ribes'},
-    {type:'transfer', tm:'TBD', t:'Masia Victoria \u2192 Barcelona Airport', n:'Car not booked yet', dur:'\u2248 1h'},
-    {type:'flight', tm:'4:15 PM', t:'Barcelona (BCN) \u2192 Palma de Mallorca (PMI)', n:'Vueling VY3912 \u00b7 conf NRMQHR', addr:'Josep Tarradellas Barcelona\u2013El Prat \u2192 Palma de Mallorca', dur:'55 min \u00b7 lands 5:10 PM'},
-    {type:'transfer', tm:'TBD', t:'Palma Airport \u2192 Zel Mallorca', n:'Car not booked yet', dur:'\u2248 35 min'},
+    {type:'transfer', tm:'10:00 AM', t:'Masia Victoria \u2192 Barcelona Airport', n:'Car not booked yet', dur:'\u2248 1h'},
+    {type:'flight', tm:'3:45 PM', t:'Barcelona (BCN) \u2192 Palma de Mallorca (PMI)', n:'Vueling VY3912 \u00b7 conf NRMQHR', addr:'Josep Tarradellas Barcelona\u2013El Prat \u2192 Palma de Mallorca', dur:'55 min \u00b7 lands 4:40 PM'},
+    {type:'transfer', tm:'4:00 PM', t:'Palma Airport \u2192 Zel Mallorca', n:'Car not booked yet', dur:'\u2248 35 min'},
     {type:'hotel', tm:'4:00 PM', t:'Check in: Zel Mallorca', n:'6 nights \u00b7 honeymoon \u00b7 breakfast included', addr:'Duque de Extremera 16, 07181 Palmanova', url:'https://www.melia.com/en/hotels/spain/majorca/zel-mallorca'},
   ]},
   {day:'Tuesday, Oct 6', items:[
@@ -777,9 +776,9 @@ const DAYS = [
   ]},
   {day:'Saturday, Oct 10', items:[
     {type:'event', tm:'TBD', t:'Activity / dinner', n:'Tentative \u2014 not planned yet'},
-    {type:'hotel', tm:'10:00 AM', t:'Check out: Zel Mallorca', n:'', addr:'Duque de Extremera 16, 07181 Palmanova'},
-    {type:'transfer', tm:'TBD', t:'Zel Mallorca \u2192 Palma Airport', n:'Car not booked yet', dur:'\u2248 35 min'},
-    {type:'flight', tm:'1:30 PM', t:'Palma de Mallorca \u2192 London Gatwick', n:'BA2671 \u00b7 conf Y9RHCA', addr:'PMI \u2192 LGW', dur:'2h 40m \u00b7 lands 3:10 PM'},
+    {type:'hotel', tm:'9:00 AM', t:'Check out: Zel Mallorca', n:'', addr:'Duque de Extremera 16, 07181 Palmanova'},
+    {type:'transfer', tm:'9:00 AM', t:'Zel Mallorca \u2192 Palma Airport', n:'Car not booked yet', dur:'\u2248 35 min'},
+    {type:'flight', tm:'11:05 AM', t:'Palma de Mallorca \u2192 London Gatwick', n:'BA2671 \u00b7 conf Y9RHCA', addr:'PMI \u2192 LGW', dur:'2h 40m \u00b7 lands ~1:45 PM'},
     {type:'transfer', tm:'TBD', t:'Gatwick \u2192 Threadneedles, Autograph Collection', n:'Car not booked yet', dur:'\u2248 1h 15m'},
     {type:'hotel', tm:'4:00 PM', t:'Check in: Threadneedles, Autograph Collection', n:'1 night', addr:'5 Threadneedle Street, London EC2R 8AY', url:'https://www.marriott.com/en-us/hotels/lonak-threadneedles-autograph-collection/overview/'},
     {type:'event', tm:'7:30 PM', t:'Dinner at Bread Street Kitchen & Bar', n:'22 Bishopsgate, London'},
