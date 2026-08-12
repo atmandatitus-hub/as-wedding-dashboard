@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Amanda & Steven · Wedding Planning Dashboard</title>
+<title>Amanda & Steven · Wedding Dashboard</title>
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -322,7 +322,7 @@
 <div id="gate" style="position:fixed;inset:0;background:var(--cream);z-index:999;display:flex;align-items:center;justify-content:center;padding:22px">
   <form id="gate-form" style="max-width:320px;width:100%;text-align:center">
     <div style="font-family:'Libre Caslon Display',serif;font-size:1.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--plum);margin-bottom:6px">Amanda &amp; Steven</div>
-    <div style="font-size:.9rem;color:var(--muted);margin-bottom:18px">Enter the password to view the wedding planning dashboard</div>
+    <div style="font-size:.9rem;color:var(--muted);margin-bottom:18px">Enter the password to view the wedding dashboard</div>
     <input id="gate-input" type="password" autocomplete="off" style="width:100%;padding:11px 14px;border:1px solid var(--sand);border-radius:10px;background:var(--surface);color:var(--ink);font-family:'Source Sans Pro',sans-serif;font-size:1rem;text-align:center" placeholder="Password">
     <div id="gate-error" style="color:#a23; font-size:.8rem;margin-top:8px;height:1em"></div>
     <button type="submit" style="margin-top:14px;width:100%;padding:11px;border:none;border-radius:99px;background:var(--plum-fill);color:var(--paper);font-family:'Source Sans Pro',sans-serif;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;cursor:pointer">Enter</button>
@@ -527,7 +527,7 @@ const BREAKDOWN = [
   ]},
   {n:'Catering — Cloud9', pay:'Wire transfer', who:'Amanda & Steven', stages:[
     {label:'Deposit', eur:2000, usd:2285, date:'Aug 23, 2025', status:'paid'},
-    {label:'Final payment', eur:3489.36, usd:4020, date:'Aug 22, 2026', status:'paid', note:'Brian & Lori\u2019s $5,000 gift covered most of this'},
+    {label:'Final payment', eur:3489.36, usd:4020, date:'Aug 22, 2026', status:'paid', who:'Jan & Bob', note:'Paid by Jan & Bob \u00b7 Brian & Lori\u2019s $5,000 gift also went toward this'},
   ]},
   {n:'Florals & Decor', pay:'Wire transfer', who:'Amanda & Steven', stages:[
     {label:'Deposit', eur:1430.50, usd:1638, date:'Feb 14, 2026', status:'paid'},
@@ -539,11 +539,11 @@ const BREAKDOWN = [
   ]},
   {n:'Videography', pay:'Wire transfer', who:'Amanda & Steven', stages:[
     {label:'Deposit', eur:665.50, usd:760, date:'Oct 21, 2025', status:'paid'},
-    {label:'Final payment', eur:665.50, usd:760, date:'Oct 3, 2026', status:'due'},
+    {label:'Final payment', eur:665.50, usd:760, date:'Oct 3, 2026', status:'due', who:'Jan & Bob'},
   ]},
   {n:'Photography', pay:'Revolut', who:'Amanda & Steven', stages:[
     {label:'Deposit', eur:500, usd:571, date:'Oct 24, 2025', status:'paid'},
-    {label:'Final payment', eur:1200, usd:1371, date:'Oct 3, 2026', status:'due'},
+    {label:'Final payment', eur:1200, usd:1371, date:'Oct 3, 2026', status:'due', who:'Jan & Bob'},
   ]},
   {n:'Hair & Make-up', pay:'Revolut', who:'Jan & Bob', stages:[
     {label:'Deposit', eur:50, usd:57, date:'Nov 26, 2025', status:'paid'},
@@ -551,7 +551,7 @@ const BREAKDOWN = [
   ]},
   {n:'Music', pay:'Wire transfer', who:'Amanda & Steven', stages:[
     {label:'Deposit', eur:100, usd:114, date:'Nov 26, 2025', status:'paid'},
-    {label:'Final payment', eur:550, usd:628, date:'Oct 3, 2026', status:'due'},
+    {label:'Final payment', eur:550, usd:628, date:'Oct 3, 2026', status:'due', note:'Jan & Bob may help with this one \u2014 not confirmed yet'},
   ]},
   {n:'Dress', pay:'n/a', who:'Jan & Bob', stages:[
     {label:'Paid in full', eur:2865, usd:3274, date:'Sep 21, 2025', status:'paid'},
@@ -867,7 +867,7 @@ function parseStageDate(d){
 const ALL_STAGES = [];
 BREAKDOWN.forEach(b=>{
   if(b.unknown) return;
-  b.stages.forEach(s=> ALL_STAGES.push({...s, item:b.n, who:b.who, method:s.pay||b.pay}));
+  b.stages.forEach(s=> ALL_STAGES.push({...s, item:b.n, who:s.who||b.who, method:s.pay||b.pay}));
 });
 
 const payRow = s => `
