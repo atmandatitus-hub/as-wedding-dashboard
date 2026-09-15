@@ -302,6 +302,8 @@
   .wxday.wedding .wxdate,.wxday.wedding .wxcond,.wxday.wedding .wxrain{color:var(--paper)}
   .wxday.wedding .wxtemp{color:var(--paper)}
   .wxdate{font-family:'Source Sans Pro',sans-serif;font-size:.66rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+  .wxcity{font-family:'Libre Caslon Display',serif;font-size:.78rem;color:var(--plum);margin-top:1px}
+  .wxday.wedding .wxcity{color:var(--paper)}
   .wxtemp{font-family:'Libre Caslon Display',serif;font-size:1.3rem;color:var(--plum);margin-top:4px}
   .wxtemp span{font-size:.85rem;color:var(--muted);font-family:'Source Sans Pro',sans-serif}
   .wxcond{font-size:.72rem;color:var(--ink);margin-top:2px}
@@ -1004,7 +1006,7 @@ function renderBdItems(sortMode='due'){
 }
 renderBdItems();
 
-/* Live weather for Sitges, pulled fresh every time the page loads.
+/* Live weather, city-specific per leg of the trip — pulled fresh every load.
    Open-Meteo is used instead of AccuWeather because it's free, requires no
    API key, and allows direct browser requests (CORS-enabled) — an AccuWeather
    key would have to be embedded in this public file for anyone to read, and
@@ -1017,25 +1019,50 @@ renderBdItems();
 (function(){
   const WMAP = {0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',48:'Foggy',51:'Light drizzle',53:'Drizzle',55:'Drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',80:'Showers',81:'Showers',82:'Storms',95:'Storms'};
   const WICON = {0:'\u2600',1:'\u2600',2:'\u26C5',3:'\u2601',45:'\u2601',48:'\u2601',51:'\u2614',53:'\u2614',55:'\u2614',61:'\u2614',63:'\u2614',65:'\u2614',80:'\u2614',81:'\u2614',82:'\u26A1',95:'\u26A1'};
-  const url = 'https://api.open-meteo.com/v1/forecast?latitude=41.2379&longitude=1.8057&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode&temperature_unit=fahrenheit&timezone=Europe%2FMadrid&forecast_days=16';
-  fetch(url).then(r=>r.json()).then(data=>{
-    const days = data.daily.time;
-    const items = days.map((d,i)=>({
-      date: new Date(d+'T00:00:00'),
-      hi: Math.round(data.daily.temperature_2m_max[i]),
-      lo: Math.round(data.daily.temperature_2m_min[i]),
-      rain: data.daily.precipitation_probability_max[i],
-      cond: WMAP[data.daily.weathercode[i]] || '',
-      icon: WICON[data.daily.weathercode[i]] || '',
-    }));
-    const wedding = items.find(x=>x.date.getMonth()===9 && x.date.getDate()===3);
+
+  // Each leg of the trip, with the dates spent overnight there.
+  const TRIP_LOCATIONS = [
+    {name:'San Francisco', lat:37.7749, lon:-122.4194, dates:['2026-09-22','2026-10-11','2026-10-12']},
+    {name:'London', lat:51.5074, lon:-0.1278, dates:['2026-09-23','2026-09-24','2026-10-10']},
+    {name:'Barcelona', lat:41.3874, lon:2.1686, dates:['2026-09-25','2026-09-26','2026-09-27']},
+    {name:'Sitges', lat:41.2379, lon:1.8057, dates:['2026-09-28','2026-09-29','2026-09-30','2026-10-01','2026-10-02','2026-10-03','2026-10-04']},
+    {name:'Mallorca', lat:39.5539, lon:2.4526, dates:['2026-10-05','2026-10-06','2026-10-07','2026-10-08','2026-10-09']},
+  ];
+  const ALL_DATES = TRIP_LOCATIONS.flatMap(l=>l.dates).sort();
+
+  Promise.all(TRIP_LOCATIONS.map(loc=>{
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode&temperature_unit=fahrenheit&timezone=Europe%2FMadrid&forecast_days=16`;
+    return fetch(url).then(r=>r.json()).then(data=>({loc, data})).catch(()=>({loc, data:null}));
+  })).then(results=>{
+    const found = {};
+    results.forEach(({loc, data})=>{
+      if(!data) return;
+      loc.dates.forEach(dstr=>{
+        const i = data.daily.time.indexOf(dstr);
+        if(i===-1) return;
+        found[dstr] = {
+          date: new Date(dstr+'T00:00:00'),
+          hi: Math.round(data.daily.temperature_2m_max[i]),
+          lo: Math.round(data.daily.temperature_2m_min[i]),
+          rain: data.daily.precipitation_probability_max[i],
+          cond: WMAP[data.daily.weathercode[i]] || '',
+          icon: WICON[data.daily.weathercode[i]] || '',
+          city: loc.name,
+        };
+      });
+    });
+    const items = ALL_DATES.filter(d=>found[d]).map(d=>found[d]);
+    const wedding = found['2026-10-03'];
     document.getElementById('wx-sub').textContent = wedding
       ? `Real forecast now available through the wedding day \u2014 updates every time this page loads.`
-      : `Live forecast currently reaches ${items[items.length-1].date.toLocaleDateString('en-US',{month:'short',day:'numeric'})} \u2014 the wedding day forecast will appear here automatically once it's in range.`;
+      : items.length
+        ? `Live forecast currently reaches ${items[items.length-1].date.toLocaleDateString('en-US',{month:'short',day:'numeric'})} (${items[items.length-1].city}) \u2014 the wedding day forecast will appear here automatically once it's in range.`
+        : `Live forecast not available yet \u2014 check back closer to the trip.`;
     document.getElementById('wx-strip').innerHTML = `<div class="wxstrip">${items.map(x=>{
       const isWedding = x.date.getMonth()===9 && x.date.getDate()===3;
       return `<div class="wxday ${isWedding?'wedding':''}">
         <div class="wxdate">${x.date.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}</div>
+        <div class="wxcity">${x.city}</div>
         <div class="wxtemp">${x.hi}\u00b0<span>/${x.lo}\u00b0</span></div>
         <div class="wxcond">${x.icon} ${x.cond}</div>
         <div class="wxrain">${x.rain}% rain</div>
@@ -1045,8 +1072,9 @@ renderBdItems();
     // Feed the same data into the Itinerary calendar and day-detail panel
     if(typeof WEATHER_BY_DATE !== 'undefined'){
       items.forEach(x=>{
-        WEATHER_BY_DATE[x.date.toISOString().slice(0,10)] = x;
-        const cell = document.querySelector(`.cday[data-date="${x.date.toISOString().slice(0,10)}"] .cwx`);
+        const dstr = x.date.toISOString().slice(0,10);
+        WEATHER_BY_DATE[dstr] = x;
+        const cell = document.querySelector(`.cday[data-date="${dstr}"] .cwx`);
         if(cell) cell.textContent = `${x.hi}\u00b0`;
       });
       if(typeof selectedIdx==='number' && selectedIdx>=0 && typeof showDayDetail==='function') showDayDetail(selectedIdx);
@@ -1326,7 +1354,7 @@ function showDayDetail(idx){
   if(btn) btn.classList.add('selected');
   const d = DAY_DATES[idx];
   const wx = WEATHER_BY_DATE[d.date.toISOString().slice(0,10)];
-  const wxLine = wx ? `<div class="ddwx"><span class="ddwx-icon">${wx.icon}</span> ${wx.hi}\u00b0/${wx.lo}\u00b0F \u00b7 ${wx.cond} \u00b7 ${wx.rain}% rain</div>` : '';
+  const wxLine = wx ? `<div class="ddwx"><span class="ddwx-icon">${wx.icon}</span> ${wx.city}: ${wx.hi}\u00b0/${wx.lo}\u00b0F \u00b7 ${wx.cond} \u00b7 ${wx.rain}% rain</div>` : '';
   document.getElementById('itin-daydetail').innerHTML = `
     <div class="ddhead">${d.day}</div>
     ${wxLine}
