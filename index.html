@@ -236,6 +236,10 @@
   .cday.wedding.selected{background:var(--plum-2);border-color:var(--plum-2)}
   .cring{position:absolute;top:3px;right:5px;font-size:.62rem;color:var(--paper)}
   .ccount{display:none}
+  .cwx{font-family:'Source Sans Pro',sans-serif;font-size:.6rem;color:var(--muted);margin-top:1px}
+  .cday.selected .cwx{color:var(--paper)}
+  .cday.wedding .cwx{color:#D9C9B6}
+  .ddwx{font-family:'Source Sans Pro',sans-serif;font-size:.82rem;color:var(--muted);margin:-4px 0 16px}
   .cglyph{font-size:.6rem;line-height:1;display:inline-block;margin:0 1px}
   .cglyph.flight{color:var(--plum-fill)}
   .cglyph.hotel{color:var(--muted)}
@@ -288,6 +292,17 @@
 
   footer{text-align:center;padding:30px 22px 50px;color:var(--sage-deep);font-size:.78rem}
   footer a{color:var(--clay)}
+
+  .wxstrip{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;margin-bottom:8px}
+  .wxday{flex:0 0 auto;min-width:92px;background:var(--surface);border:1px solid var(--sand);box-shadow:0 1px 3px rgba(20,10,15,.04),0 1px 2px rgba(20,10,15,.03);border-radius:14px;padding:12px 10px;text-align:center}
+  .wxday.wedding{border-color:var(--plum-fill);background:var(--plum-fill)}
+  .wxday.wedding .wxdate,.wxday.wedding .wxcond,.wxday.wedding .wxrain{color:var(--paper)}
+  .wxday.wedding .wxtemp{color:var(--paper)}
+  .wxdate{font-family:'Source Sans Pro',sans-serif;font-size:.66rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+  .wxtemp{font-family:'Libre Caslon Display',serif;font-size:1.3rem;color:var(--plum);margin-top:4px}
+  .wxtemp span{font-size:.85rem;color:var(--muted);font-family:'Source Sans Pro',sans-serif}
+  .wxcond{font-size:.72rem;color:var(--ink);margin-top:2px}
+  .wxrain{font-family:'Source Sans Pro',sans-serif;font-size:.66rem;color:var(--muted);margin-top:4px}
 
   .charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:8px}
   .chartcard{background:var(--surface);border:1px solid var(--sand);box-shadow:0 1px 3px rgba(20,10,15,.04),0 1px 2px rgba(20,10,15,.03);border-radius:16px;padding:24px 18px 20px;text-align:center}
@@ -373,6 +388,10 @@
 
   <!-- OVERVIEW -->
   <section class="panel active" id="overview" role="tabpanel">
+    <h2 class="secttl">Weather in Sitges</h2>
+    <p class="sectsub" id="wx-sub">Loading live forecast…</p>
+    <div id="wx-strip"></div>
+
     <div class="charts">
       <div class="chartcard" id="chart-vendors"></div>
       <div class="chartcard" id="chart-tasks"></div>
@@ -673,6 +692,7 @@ const TASKS = [
   {ph:'Wedding week', c:'Prep', t:'Attend hair & make-up preview', w:'Sep 29', s:'open'},
   {ph:'Wedding week', c:'Dinner', t:'Build dinner/after music playlist', w:'Sep 30', s:'open'},
   {ph:'Wedding week', c:'Prep', t:'Assemble welcome gift bags', w:'Sep 30', s:'open'},
+  {ph:'Wedding week', c:'Prep', t:'Write thank you notes', w:'Sep 30', s:'open'},
   {ph:'Wedding week', c:'Photo', t:'Choose locations for wedding photos', w:'Oct 1', s:'open'},
   {ph:'Wedding week', c:'Logistics', t:'Pay venue cleaning fee (cash)', w:'Oct 1', s:'open'},
   {ph:'Wedding week', c:'Logistics', t:'Pay final balance — videographer', w:'Oct 3', s:'open'},
@@ -697,11 +717,7 @@ const DAYS = [
     {type:'transfer', tm:'6:00 PM', t:'Heathrow \u2192 London Marriott, Grosvenor Square', n:'Booking confirmation #120033', dur:'\u2248 45 min', booked:true},
     {type:'hotel', tm:'4:00 PM', t:'Check in: London Marriott Hotel Grosvenor Square', n:'3 nights', addr:'Grosvenor Square, London W1K 6JP', url:'https://www.marriott.com/en-us/hotels/londt-london-marriott-hotel-grosvenor-square/overview/'},
   ]},
-  {day:'Wednesday, Sept 23', items:[
-    {type:'event', tm:'TBD', t:'Activity / dinner', n:'Tentative \u2014 not planned yet'},
-  ]},
   {day:'Thursday, Sept 24', items:[
-    {type:'event', tm:'TBD', t:'Breakfast / activity', n:'Tentative \u2014 not planned yet'},
     {type:'event', tm:'6:30 PM', t:'Dinner reservation', n:'Lucky Cat, Mayfair \u00b7 party of 3', url:'https://www.gordonramsayrestaurants.com/lucky-cat/'},
   ]},
   {day:'Friday, Sept 25', items:[
@@ -710,15 +726,6 @@ const DAYS = [
     {type:'flight', tm:'4:05 PM', t:'London City \u2192 Barcelona', n:'BA8759 \u00b7 booking ref XA8U6I', addr:'LCY \u2192 BCN', dur:'2h 10m \u00b7 lands 7:15 PM'},
     {type:'transfer', tm:'7:15 PM', t:'Barcelona Airport \u2192 Cotton House Hotel', n:'Booked through British Airways \u00b7 conf XF5V64', dur:'\u2248 25 min', booked:true},
     {type:'hotel', tm:'8:00 PM', t:'Check in: Cotton House Hotel, Autograph Collection', n:'3 nights \u00b7 conf 72839956', addr:'Gran Via de les Corts Catalanes 670, Barcelona 08010', url:'https://hotelcottonhouse.com/en/'},
-    {type:'event', tm:'TBD', t:'Dinner', n:'Tentative \u2014 not planned yet'},
-  ]},
-  {day:'Saturday, Sept 26', items:[
-    {type:'event', tm:'TBD', t:'Beach club', n:'Tentative \u2014 not planned yet'},
-    {type:'event', tm:'TBD', t:'Dinner', n:'Tentative \u2014 not planned yet'},
-  ]},
-  {day:'Sunday, Sept 27', items:[
-    {type:'event', tm:'TBD', t:'Breakfast', n:'Tentative \u2014 not planned yet'},
-    {type:'event', tm:'TBD', t:'Activity / dinner', n:'Tentative \u2014 not planned yet'},
   ]},
   {day:'Monday, Sept 28', items:[
     {type:'hotel', tm:'12:00 PM', t:'Check out: Cotton House Hotel', n:'', addr:'Gran Via de les Corts Catalanes 670, Barcelona 08010'},
@@ -729,10 +736,6 @@ const DAYS = [
   {day:'Tuesday, Sept 29', items:[
     {type:'event', tm:'TBD', t:'Make-up & hair', n:'Trial run'},
     {type:'event', tm:'TBD', t:'Private photo session', n:'Beach and cityscapes'},
-    {type:'event', tm:'TBD', t:'Dinner', n:'Tentative \u2014 not planned yet'},
-  ]},
-  {day:'Wednesday, Sept 30', items:[
-    {type:'event', tm:'TBD', t:'Activity / dinner', n:'Tentative \u2014 not planned yet'},
   ]},
   {day:'Thursday, Oct 1', items:[
     {type:'event', tm:'8:30 AM', t:'Train: Sitges \u2192 Barcelona', n:''},
@@ -763,20 +766,7 @@ const DAYS = [
     {type:'transfer', tm:'4:00 PM', t:'Palma Airport \u2192 Zel Mallorca', n:'Car not booked yet', dur:'\u2248 35 min'},
     {type:'hotel', tm:'4:00 PM', t:'Check in: Zel Mallorca', n:'6 nights \u00b7 honeymoon \u00b7 breakfast included', addr:'Duque de Extremera 16, 07181 Palmanova', url:'https://www.melia.com/en/hotels/spain/majorca/zel-mallorca'},
   ]},
-  {day:'Tuesday, Oct 6', items:[
-    {type:'event', tm:'TBD', t:'Activity / dinner', n:'Tentative \u2014 not planned yet'},
-  ]},
-  {day:'Wednesday, Oct 7', items:[
-    {type:'event', tm:'TBD', t:'Activity / dinner', n:'Tentative \u2014 not planned yet'},
-  ]},
-  {day:'Thursday, Oct 8', items:[
-    {type:'event', tm:'TBD', t:'Activity / dinner', n:'Tentative \u2014 not planned yet'},
-  ]},
-  {day:'Friday, Oct 9', items:[
-    {type:'event', tm:'TBD', t:'Activity / dinner', n:'Tentative \u2014 not planned yet'},
-  ]},
   {day:'Saturday, Oct 10', items:[
-    {type:'event', tm:'TBD', t:'Activity / dinner', n:'Tentative \u2014 not planned yet'},
     {type:'hotel', tm:'9:00 AM', t:'Check out: Zel Mallorca', n:'', addr:'Duque de Extremera 16, 07181 Palmanova'},
     {type:'transfer', tm:'9:00 AM', t:'Zel Mallorca \u2192 Palma Airport', n:'Car not booked yet', dur:'\u2248 35 min'},
     {type:'flight', tm:'11:05 AM', t:'Palma de Mallorca \u2192 London Gatwick', n:'BA2671 \u00b7 conf Y9RHCA', addr:'PMI \u2192 LGW', dur:'2h 40m \u00b7 lands ~1:45 PM'},
@@ -1008,6 +998,57 @@ function renderBdItems(sortMode='due'){
   }).join('');
 }
 renderBdItems();
+
+/* Live weather for Sitges, pulled fresh every time the page loads.
+   Open-Meteo is used instead of AccuWeather because it's free, requires no
+   API key, and allows direct browser requests (CORS-enabled) — an AccuWeather
+   key would have to be embedded in this public file for anyone to read, and
+   its free tier caps out at 50 calls/day, which a family checking the site
+   repeatedly could burn through fast. This gets the same real, live result
+   without exposing a key or risking a quota wall.
+   Forecasts only exist ~16 days out for any provider — that's a physical
+   limit of weather prediction, not a data-source choice — so days further
+   out than that will show as not-yet-available until the date gets closer. */
+(function(){
+  const WMAP = {0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',48:'Foggy',51:'Light drizzle',53:'Drizzle',55:'Drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',80:'Showers',81:'Showers',82:'Storms',95:'Storms'};
+  const url = 'https://api.open-meteo.com/v1/forecast?latitude=41.2379&longitude=1.8057&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode&temperature_unit=fahrenheit&timezone=Europe%2FMadrid&forecast_days=16';
+  fetch(url).then(r=>r.json()).then(data=>{
+    const days = data.daily.time;
+    const items = days.map((d,i)=>({
+      date: new Date(d+'T00:00:00'),
+      hi: Math.round(data.daily.temperature_2m_max[i]),
+      lo: Math.round(data.daily.temperature_2m_min[i]),
+      rain: data.daily.precipitation_probability_max[i],
+      cond: WMAP[data.daily.weathercode[i]] || '',
+    }));
+    const wedding = items.find(x=>x.date.getMonth()===9 && x.date.getDate()===3);
+    document.getElementById('wx-sub').textContent = wedding
+      ? `Real forecast now available through the wedding day \u2014 updates every time this page loads.`
+      : `Live forecast currently reaches ${items[items.length-1].date.toLocaleDateString('en-US',{month:'short',day:'numeric'})} \u2014 the wedding day forecast will appear here automatically once it's in range.`;
+    document.getElementById('wx-strip').innerHTML = `<div class="wxstrip">${items.map(x=>{
+      const isWedding = x.date.getMonth()===9 && x.date.getDate()===3;
+      return `<div class="wxday ${isWedding?'wedding':''}">
+        <div class="wxdate">${x.date.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}</div>
+        <div class="wxtemp">${x.hi}\u00b0<span>/${x.lo}\u00b0</span></div>
+        <div class="wxcond">${x.cond}</div>
+        <div class="wxrain">${x.rain}% rain</div>
+      </div>`;
+    }).join('')}</div>`;
+
+    // Feed the same data into the Itinerary calendar and day-detail panel
+    if(typeof WEATHER_BY_DATE !== 'undefined'){
+      items.forEach(x=>{
+        WEATHER_BY_DATE[x.date.toISOString().slice(0,10)] = x;
+        const cell = document.querySelector(`.cday[data-date="${x.date.toISOString().slice(0,10)}"] .cwx`);
+        if(cell) cell.textContent = `${x.hi}\u00b0`;
+      });
+      if(typeof selectedIdx==='number' && selectedIdx>=0 && typeof showDayDetail==='function') showDayDetail(selectedIdx);
+    }
+  }).catch(err=>{
+    document.getElementById('wx-sub').textContent = 'Live forecast unavailable right now \u2014 will retry next page load.';
+    console.warn('Weather fetch failed:', err);
+  });
+})();
 document.querySelectorAll('#bd-sort .fbtn').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('#bd-sort .fbtn').forEach(x=>x.setAttribute('aria-pressed','false'));
   b.setAttribute('aria-pressed','true');
@@ -1252,8 +1293,9 @@ while(cursor <= gridEnd){
       (hasHotelChange?'<span class="cglyph hotel">\u25A0</span>':'') +
       (hasNeedsBooking?'<span class="cglyph dashed">\u25CB</span>':'');
   }
-  calCells += `<button class="cday ${inTrip?'active':''} ${isWedding?'wedding':''} ${hasFlight?'flightday':''}" ${inTrip?`data-idx="${idx}"`:'disabled'}>
+  calCells += `<button class="cday ${inTrip?'active':''} ${isWedding?'wedding':''} ${hasFlight?'flightday':''}" data-date="${cursor.toISOString().slice(0,10)}" ${inTrip?`data-idx="${idx}"`:'disabled'}>
     ${isWedding?'<span class="cring">\u2661</span>':''}<span class="cnum">${cursor.getDate()}</span>${dots}
+    <span class="cwx"></span>
   </button>`;
   cursor.setDate(cursor.getDate()+1);
 }
@@ -1267,14 +1309,18 @@ document.getElementById('itin-calendar').innerHTML = `
     <span><span class="cring" style="position:static">\u2661</span> Wedding day</span>
   </div>`;
 
+let WEATHER_BY_DATE = {};
 function showDayDetail(idx){
   selectedIdx = idx;
   document.querySelectorAll('.cday').forEach(b=>b.classList.remove('selected'));
   const btn = document.querySelector(`.cday[data-idx="${idx}"]`);
   if(btn) btn.classList.add('selected');
   const d = DAY_DATES[idx];
+  const wx = WEATHER_BY_DATE[d.date.toISOString().slice(0,10)];
+  const wxLine = wx ? `<div class="ddwx">${wx.hi}\u00b0/${wx.lo}\u00b0F \u00b7 ${wx.cond} \u00b7 ${wx.rain}% rain</div>` : '';
   document.getElementById('itin-daydetail').innerHTML = `
     <div class="ddhead">${d.day}</div>
+    ${wxLine}
     <div class="dayflow">${d.items.map(renderItem).join('')}</div>`;
   document.getElementById('itin-daydetail').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
