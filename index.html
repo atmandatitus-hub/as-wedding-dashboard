@@ -518,28 +518,27 @@ const BREAKDOWN = [
   {n:'Coordination — Amar\u00e9', pay:'Wire transfer', who:'Amanda & Steven', stages:[
     {label:'Deposit', eur:2000, usd:2285, date:'Sep 24, 2025', status:'paid'},
     {label:'Second payment', eur:1500, usd:1714, date:'Apr 3, 2026', status:'paid'},
-    {label:'Final payment', eur:1500, usd:1714, date:'Sep 3, 2026', status:'due'},
+    {label:'Final payment', eur:1500, usd:1714, date:'Sep 3, 2026', status:'paid'},
   ]},
   {n:'Venue — Masia Victoria', pay:'Wire transfer', who:'Jan & Bob', stages:[
     {label:'Deposit', eur:2640, usd:3016, date:'Dec 17, 2024', status:'paid'},
     {label:'Second payment', eur:13060, usd:14922, date:'Jul 6, 2026', status:'paid', note:'Includes €2,500 refundable security deposit · paid ahead of the Aug 6 due date'},
-    {label:'Cleaning fee', eur:500, usd:571, date:'Oct 1, 2026', status:'due', note:'Cash on arrival', pay:'Cash'},
+    {label:'Cleaning fee', eur:500, usd:571, date:'Oct 1, 2026', status:'paid', note:'Cash on arrival \u2014 sheet marks this complete though check-in hasn\u2019t happened yet, worth double-checking', pay:'Cash'},
   ]},
   {n:'Catering — Cloud9', pay:'Wire transfer', who:'Amanda & Steven', stages:[
     {label:'Deposit', eur:2000, usd:2285, date:'Aug 23, 2025', status:'paid'},
-    {label:'Final payment', eur:3489.36, usd:4020, date:'Aug 22, 2026', status:'paid', who:'Jan & Bob', note:'Paid by Jan & Bob \u00b7 Brian & Lori\u2019s $5,000 gift also went toward this'},
+    {label:'Final payment', eur:3489.36, usd:4020, date:'Aug 22, 2026', status:'paid', who:'Jan & Bob', note:'Jan & Bob covered the remaining balance \u00b7 Brian & Lori\u2019s $5,000 gift also went toward this'},
   ]},
   {n:'Florals & Decor', pay:'Wire transfer', who:'Amanda & Steven', stages:[
     {label:'Deposit', eur:1430.50, usd:1638, date:'Feb 14, 2026', status:'paid'},
     {label:'Final payment', eur:1305, usd:1494, date:'Sep 3, 2026', status:'due'},
   ]},
   {n:'Hotels (before/after)', pay:'Credit card', who:'Amanda & Steven', stages:[
-    {label:'Booked & paid', eur:2595.91, usd:2966, date:'Dec 21, 2025', status:'paid'},
-    {label:'Final payment', eur:1390.80, usd:1589, date:'Oct 1, 2026', status:'due'},
+    {label:'Paid in full', eur:3986.71, usd:4601, date:'Dec 21, 2025', status:'paid'},
   ]},
   {n:'Videography', pay:'Wire transfer', who:'Amanda & Steven', stages:[
     {label:'Deposit', eur:665.50, usd:760, date:'Oct 21, 2025', status:'paid'},
-    {label:'Final payment', eur:665.50, usd:760, date:'Oct 3, 2026', status:'due', who:'Jan & Bob'},
+    {label:'Final payment', eur:665.50, usd:760, date:'Oct 3, 2026', status:'due'},
   ]},
   {n:'Photography', pay:'Revolut', who:'Amanda & Steven', stages:[
     {label:'Deposit', eur:500, usd:571, date:'Oct 24, 2025', status:'paid'},
@@ -569,11 +568,11 @@ const BREAKDOWN = [
     {label:'Paid in full', eur:1671, usd:1903, date:'Jan 11, 2026', status:'paid', note:'Includes the London \u2192 Barcelona leg, booked Jul 2026'},
   ]},
   {n:'Transportation', pay:'Credit card', who:'Amanda & Steven', stages:[
-    {label:'Final payment', eur:372.03, usd:428, date:'Sep 22, 2026', status:'due', note:'Hertz car rental & Addison Lee airport transfer'},
+    {label:'Paid in full', eur:525.25, usd:606, date:'Aug 3, 2026', status:'paid', note:'Hertz, Addison Lee & Holiday Taxi'},
   ]},
   {n:'Alterations', pay:'Credit card', who:'Amanda & Steven', stages:[
     {label:'Deposit', eur:180, usd:206, date:'Jul 29, 2026', status:'paid'},
-    {label:'Final payment', eur:170, usd:195, date:'Sep 10, 2026', status:'due'},
+    {label:'Final payment', eur:200, usd:231, date:'Sep 10, 2026', status:'paid'},
   ]},
   {n:'Tux', pay:'Credit card', who:'Amanda & Steven', stages:[
     {label:'Paid in full', eur:2147.14, usd:2441.66, date:'Jul 6, 2026', status:'paid'},
@@ -581,6 +580,7 @@ const BREAKDOWN = [
   {n:'Shoes & Bow Tie', pay:'Credit card', who:'Amanda & Steven', stages:[
     {label:'Paid in full', eur:446, usd:515, date:'Jul 26, 2026', status:'paid'},
   ]},
+  {n:'Stationery', unknown:true, pay:'', who:'Steven', note:'Simply Stated (Brian) \u2014 waiting on final total'},
 ];
 
 const GIFTS = [
