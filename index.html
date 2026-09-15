@@ -222,9 +222,9 @@
   .calweekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:14px 0 6px}
   .calweekdays span{text-align:center;font-family:'Source Sans Pro',sans-serif;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
   .calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-  .cday{position:relative;aspect-ratio:1;border:1px solid var(--sand);border-radius:10px;background:var(--surface);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px;transition:all .15s;font-family:inherit;overflow:hidden}
+  .cday{position:relative;aspect-ratio:1;border:1px solid var(--sand);border-radius:10px;background:var(--surface);cursor:pointer;display:block;padding:4px;transition:all .15s;font-family:inherit;overflow:hidden}
   .cday:disabled{border-color:transparent;background:transparent;cursor:default}
-  .cnum{font-family:'Source Sans Pro',sans-serif;font-size:.82rem;color:var(--muted)}
+  .cnum{position:absolute;top:4px;left:6px;font-family:'Source Sans Pro',sans-serif;font-size:.82rem;color:var(--muted)}
   .cday:disabled .cnum{color:transparent}
   .cday.active .cnum{color:var(--ink);font-weight:600}
   .cday.active:hover{border-color:var(--plum)}
@@ -235,11 +235,14 @@
   .cday.wedding .cnum{color:var(--paper);font-weight:700}
   .cday.wedding.selected{background:var(--plum-2);border-color:var(--plum-2)}
   .cring{position:absolute;top:3px;right:5px;font-size:.62rem;color:var(--paper)}
+  .cday.wedding .cwx{top:14px}
   .ccount{display:none}
-  .cwx{font-family:'Source Sans Pro',sans-serif;font-size:.6rem;color:var(--muted);margin-top:1px}
+  .cmid{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:1px}
+  .cwx{position:absolute;top:4px;right:5px;font-family:'Source Sans Pro',sans-serif;font-size:.6rem;color:var(--muted)}
   .cday.selected .cwx{color:var(--paper)}
   .cday.wedding .cwx{color:#D9C9B6}
-  .ddwx{font-family:'Source Sans Pro',sans-serif;font-size:.82rem;color:var(--muted);margin:-4px 0 16px}
+  .ddwx{font-family:'Source Sans Pro',sans-serif;font-size:.82rem;color:var(--muted);margin:-4px 0 16px;display:flex;align-items:center;gap:6px}
+  .ddwx-icon{font-size:1.1rem}
   .cglyph{font-size:.6rem;line-height:1;display:inline-block;margin:0 1px}
   .cglyph.flight{color:var(--plum-fill)}
   .cglyph.hotel{color:var(--muted)}
@@ -714,6 +717,8 @@ const DAYS = [
   {day:'Tuesday, Sept 22', items:[
     {type:'event', tm:'10:00 AM', t:'Pick up car rental', n:'Hertz, 16th St'},
     {type:'flight', tm:'5:55 PM', t:'San Francisco \u2192 London Heathrow', n:'Virgin Atlantic VS0020 \u00b7 conf DVBWFL', addr:'SFO \u2192 LHR', dur:'10h 20m \u00b7 lands 12:15 PM (+1)'},
+  ]},
+  {day:'Wednesday, Sept 23', items:[
     {type:'transfer', tm:'6:00 PM', t:'Heathrow \u2192 London Marriott, Grosvenor Square', n:'Booking confirmation #120033', dur:'\u2248 45 min', booked:true},
     {type:'hotel', tm:'4:00 PM', t:'Check in: London Marriott Hotel Grosvenor Square', n:'3 nights', addr:'Grosvenor Square, London W1K 6JP', url:'https://www.marriott.com/en-us/hotels/londt-london-marriott-hotel-grosvenor-square/overview/'},
   ]},
@@ -1011,6 +1016,7 @@ renderBdItems();
    out than that will show as not-yet-available until the date gets closer. */
 (function(){
   const WMAP = {0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',48:'Foggy',51:'Light drizzle',53:'Drizzle',55:'Drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',80:'Showers',81:'Showers',82:'Storms',95:'Storms'};
+  const WICON = {0:'\u2600',1:'\u2600',2:'\u26C5',3:'\u2601',45:'\u2601',48:'\u2601',51:'\u2614',53:'\u2614',55:'\u2614',61:'\u2614',63:'\u2614',65:'\u2614',80:'\u2614',81:'\u2614',82:'\u26A1',95:'\u26A1'};
   const url = 'https://api.open-meteo.com/v1/forecast?latitude=41.2379&longitude=1.8057&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode&temperature_unit=fahrenheit&timezone=Europe%2FMadrid&forecast_days=16';
   fetch(url).then(r=>r.json()).then(data=>{
     const days = data.daily.time;
@@ -1020,6 +1026,7 @@ renderBdItems();
       lo: Math.round(data.daily.temperature_2m_min[i]),
       rain: data.daily.precipitation_probability_max[i],
       cond: WMAP[data.daily.weathercode[i]] || '',
+      icon: WICON[data.daily.weathercode[i]] || '',
     }));
     const wedding = items.find(x=>x.date.getMonth()===9 && x.date.getDate()===3);
     document.getElementById('wx-sub').textContent = wedding
@@ -1030,7 +1037,7 @@ renderBdItems();
       return `<div class="wxday ${isWedding?'wedding':''}">
         <div class="wxdate">${x.date.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}</div>
         <div class="wxtemp">${x.hi}\u00b0<span>/${x.lo}\u00b0</span></div>
-        <div class="wxcond">${x.cond}</div>
+        <div class="wxcond">${x.icon} ${x.cond}</div>
         <div class="wxrain">${x.rain}% rain</div>
       </div>`;
     }).join('')}</div>`;
@@ -1294,8 +1301,10 @@ while(cursor <= gridEnd){
       (hasNeedsBooking?'<span class="cglyph dashed">\u25CB</span>':'');
   }
   calCells += `<button class="cday ${inTrip?'active':''} ${isWedding?'wedding':''} ${hasFlight?'flightday':''}" data-date="${cursor.toISOString().slice(0,10)}" ${inTrip?`data-idx="${idx}"`:'disabled'}>
-    ${isWedding?'<span class="cring">\u2661</span>':''}<span class="cnum">${cursor.getDate()}</span>${dots}
+    <span class="cnum">${cursor.getDate()}</span>
     <span class="cwx"></span>
+    ${isWedding?'<span class="cring">\u2661</span>':''}
+    <div class="cmid">${dots}</div>
   </button>`;
   cursor.setDate(cursor.getDate()+1);
 }
@@ -1317,7 +1326,7 @@ function showDayDetail(idx){
   if(btn) btn.classList.add('selected');
   const d = DAY_DATES[idx];
   const wx = WEATHER_BY_DATE[d.date.toISOString().slice(0,10)];
-  const wxLine = wx ? `<div class="ddwx">${wx.hi}\u00b0/${wx.lo}\u00b0F \u00b7 ${wx.cond} \u00b7 ${wx.rain}% rain</div>` : '';
+  const wxLine = wx ? `<div class="ddwx"><span class="ddwx-icon">${wx.icon}</span> ${wx.hi}\u00b0/${wx.lo}\u00b0F \u00b7 ${wx.cond} \u00b7 ${wx.rain}% rain</div>` : '';
   document.getElementById('itin-daydetail').innerHTML = `
     <div class="ddhead">${d.day}</div>
     ${wxLine}
