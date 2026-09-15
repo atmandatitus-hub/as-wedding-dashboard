@@ -238,7 +238,7 @@
   .cday.wedding .cwx{top:14px}
   .ccount{display:none}
   .cmid{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:1px}
-  .cwx{position:absolute;top:4px;right:5px;font-family:'Source Sans Pro',sans-serif;font-size:.6rem;color:var(--muted)}
+  .cwx{position:absolute;top:4px;right:5px;font-family:'Source Sans Pro',sans-serif;font-size:.78rem;font-weight:600;color:var(--ink)}
   .cday.selected .cwx{color:var(--paper)}
   .cday.wedding .cwx{color:#D9C9B6}
   .ddwx{font-family:'Source Sans Pro',sans-serif;font-size:.82rem;color:var(--muted);margin:-4px 0 16px;display:flex;align-items:center;gap:6px}
@@ -391,10 +391,6 @@
 
   <!-- OVERVIEW -->
   <section class="panel active" id="overview" role="tabpanel">
-    <h2 class="secttl">Weather in Sitges</h2>
-    <p class="sectsub" id="wx-sub">Loading live forecast…</p>
-    <div id="wx-strip"></div>
-
     <div class="charts">
       <div class="chartcard" id="chart-vendors"></div>
       <div class="chartcard" id="chart-tasks"></div>
@@ -463,6 +459,11 @@
     <h2 class="secttl">The whole trip</h2>
     <p class="sectsub">Sept 22 – Oct 12 &middot; tap a day to see the hour-by-hour plan.</p>
     <div class="note">All flights are booked and confirmed.</div>
+
+    <h2 class="secttl">Weather in Sitges</h2>
+    <p class="sectsub" id="wx-sub">Loading live forecast…</p>
+    <div id="wx-strip"></div>
+
     <div id="itin-calendar"></div>
     <div id="itin-daydetail"></div>
   </section>
